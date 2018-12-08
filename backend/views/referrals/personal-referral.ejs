@@ -1,0 +1,51 @@
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/navbar.ejs') %>
+
+<div class="container">
+
+    <% if (referrals) { %>
+
+    <h3 class="z-depth-2 capitalized center">
+        <%= referrals[0].referralBy.name %>  <%= referrals[0].referralBy.last_name %>' Referrals
+    </h3>
+    <div class="z-depth-4">
+        <table>
+            <thead class="blue-grey">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               <% referrals.forEach(referral => { %>
+                <tr>
+                    <td><%= referral.name %> <%= referral.name %></td>
+                    <td><%= referral.address.address %>, <%= referral.address.city %></td>
+                    <td><%= referral.phone %></td>
+                    <td><%= referral.status %></td>
+                    <td><a class="btn black" href="/detail/<%= referral._id %>">Details</a></td>
+                </tr>
+
+                <% }) %>
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </table>
+        <div style="margin-bottom: 100px;" class=""></div>
+    </div>
+
+    <% } else { %>
+
+    <div class="z-depth-2">
+        N0 Referrals
+    </div>
+
+    <% } %>
+</div>
+
+<%- include('../partials/footer.ejs') %>
+

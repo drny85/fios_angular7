@@ -1,0 +1,54 @@
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/navbar.ejs') %>
+<div class="container">
+    <br>
+    <div class="mt-5">
+        <a class="btn black" href="/referee/add-referee">Add Referee</a>
+    </div>
+    <% if (referees.length > 0) { %>
+    <div class="z-depth-3">
+        <h4 class="center">All Referees</h4>
+    </div>
+
+    <div class="referee_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <%  referees.forEach(referee => { %>
+
+                <tr>
+                    <td>
+                        <%= referee.name %>
+                        <%= referee.last_name %>
+                    </td>
+                    <td>
+                        <%= referee.phone %>
+                    </td>
+                    <td class="lowercase"><a href="mailto:<%= referee.email %>">
+                            <%= referee.email %></a></td>
+                    <td><a class="btn grey" href="/referee/details/<%= referee._id %>">Details</a></td>
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+        </table>
+    </div>
+
+    <% } else { %>
+    <div class="z-depth-5">
+        <h2 class="center">No Data</h2>
+    </div>
+    <% } %>
+    <div style="margin-bottom: 100px;" class=""></div>
+</div>
+
+<%- include('../partials/footer.ejs') %>

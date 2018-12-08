@@ -1,0 +1,90 @@
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/navbar.ejs') %>
+
+<div class="container">
+    <h2 class="center">Add New Referral</h2>
+    <div class="card grey lighten-5 animated fadeInDown">
+        <form id="formValidate" action="/add-referral" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="text" id="name" required name="name" class="validate">
+                    <label for="name">Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" id="last_name" required name="last_name" class="validate">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 l4">
+                    <input type="text" id="address" name="address" required class="validate capitalized">
+                    <label for="address">Address</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input type="text" id="apt" name="apt" class="validate">
+                    <label for="apt">Apt</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input type="number" id="zipcode" name="zipcode" maxlength="5" minlength="5" pattern="[0-9]"
+                        required class="validate">
+                    <label for="zipcode">Zip code</label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="input-field col s12 l4">
+                    <input type="text" id="city" name="city" required class="validate">
+                    <label for="city">City</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input type="tel" id="phone" onblur="formatPhone(this);" maxlength="10" required name="phone" class="validate">
+                    <label for="phone">Phone</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <input type="email" id="email" email name="email" class="validate">
+                    <label for="city">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 l4">
+                    <input type="date" name="moveIn" id="moveIn" required>
+                    <label for="moveIn">Move In</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <select name="referralBy" id="referralBy">
+                        <option value="" disabled selected>Choose a referee</option>
+                        <% referees.forEach(referee => { %>
+                            <option class="capitalized" value="<%= referee._id %>"><%= referee.name %> <%= referee.last_name %></option>
+                        <% }) %>
+                    </select>
+                    <label for="referralBy">Referral By</label>
+                </div>
+                <div class="input-field col s12 l4">
+                    <select name="status" id="status" required>
+                        <option value="new">New</option>
+                        <option value="closed">Closed</option>
+                        <option value="in progress">In Progress</option>
+                        <option value="pending">Pending</option>
+                        <option value="not sold">Not Sold</option>
+                    </select>
+                    <label for="status">Status</label>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="comment" name="comment" class="materialize-textarea"></textarea>
+                        <label for="comment">Notes or Comments</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id="btn-submit" class="btn black waves-effect waves-light" type="submit">Submit</button>
+            </div>
+            <br>
+
+        </form>
+    </div>
+
+</div>
+</div>
+
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,67 @@
+<%- include('../partials/header.ejs') %>
+<%- include('../partials/navbar.ejs') %>
+
+<div class="container">
+    <div>
+        <h4 class="center z-depth-2  lighten-3">All Referrals </h4>
+        <a class="btn waves-effect black waves-light" href="/add-referral">Add Referral</a>
+
+    </div>
+    <br>
+    <% if (referrals.length > 0) { %>
+    <div class="animated fadeInLeft">
+        <table id="referrals_table" class="table z-depth-3 highlight">
+            <thead class="grey lighten-1">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Apt</th>
+                    <th>Phone</th>
+                    <th>Move In</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+               
+                <% referrals.forEach(referral => { %>
+                <tr>
+                    <td class="">
+                        <%= referral.name %>
+                        <%= referral.last_name %>
+                    </td>
+                    <td>
+                        <%= referral.address.address %>
+                    </td>
+                    <td id="apt">
+                        <%= referral.address.apt %>
+                    </td>
+                    <td>
+                        <%= referral.phone %>
+                    </td>
+                    <td>
+                        <%= referral.moveIn %>
+                    </td>
+                    <td class="center 
+                    <%= referral.status === 'new' ? 'blue lighten-1': '' %>
+                    <%= referral.status === 'pending' ? 'amber lighten-3': '' %>
+                    <%= referral.status === 'closed' ? 'green': '' %>
+                    <%= referral.status === 'not sold' ? 'red': '' %>
+                    <%= referral.status === 'in progress' ? 'grey': '' %>
+                    ">
+                        <%= referral.status %>
+                    </td>
+                    <td class="center"><a class="btn black" href="/detail/<%= referral._id %>">Details</a></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <% } else { %>
+    <div class="z-depth-3">
+        <h3 class="center">No Data</h3>
+    </div>
+    <% } %>
+</div>
+
+<%- include('../partials/footer.ejs') %>
