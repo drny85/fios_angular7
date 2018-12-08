@@ -5,15 +5,27 @@ const Referral = require('./referral');
 
 const Schema = mongoose.Schema;
 
-const referralBySchema = new Schema({
-    name: {type: String, required: true},
-    last_name: {type: String, lowercase: true},
+const refereeSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    last_name: {
+        type: String,
+        lowercase: true
+    },
     phone: String,
-    email: {type: String, lowercase: true},
-    referrals: {type: [Schema.Types.ObjectId], ref: 'Referral'}
+    email: {
+        type: String,
+        lowercase: true
+    },
+    referrals: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Referral'
+
+    }
 })
 
-const referre = mongoose.model('Referee', referralBySchema);
+const referre = mongoose.model('Referee', refereeSchema);
 
 module.exports = referre;
-

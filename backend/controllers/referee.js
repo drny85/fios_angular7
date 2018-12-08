@@ -121,15 +121,17 @@ exports.getEditReferee = (req, res, next) => {
 
 exports.postUpdateReferee = (req, res) => {
   const id = req.params.id;
-  const title = "Update Referee";
-  const path = 'update referee';
+  // const title = "Update Referee";
+  // const path = 'update referee';
   const body = _.pick(req.body, ['name', 'last_name', 'email', 'phone']);
-
-  Referee.findByIdAndUpdate(id, body)
-    .then(referee => {
-      res.redirect('/referee/details/' + id);
+  console.log(id);
+  Referee.findByIdAndUpdate(id, body, {
+      new: true
     })
-    .catch();
+    .then(referee => {
+      res.json(referee);
+    })
+    .catch(err => console.log(err.message));
 
 
 }
