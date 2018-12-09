@@ -49,7 +49,8 @@ exports.loginUser = (req, res, next) => {
         })
         .then(user => {
             if (!user) return res.status(400).json({
-                message: 'Invalid email or password'
+                message: 'Invalid email or password',
+                error: true
             });
 
             bcrypt.compare(password, user.password, (err, matched) => {
