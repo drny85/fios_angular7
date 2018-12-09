@@ -59,7 +59,10 @@ exports.loginUser = (req, res, next) => {
                     message: 'Invalid email or password'
                 });
 
-                res.json({
+                const token = user.generateAuthToken();
+
+
+                res.header('x-auth-token', token).json({
                     message: 'Success',
                     user: _.pick(user, ['_id', 'name', 'email'])
                 });
