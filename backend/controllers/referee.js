@@ -124,7 +124,7 @@ exports.postUpdateReferee = (req, res) => {
   // const title = "Update Referee";
   // const path = 'update referee';
   const body = _.pick(req.body, ['name', 'last_name', 'email', 'phone']);
-  console.log(id);
+
   Referee.findByIdAndUpdate(id, body, {
       new: true
     })
@@ -134,4 +134,15 @@ exports.postUpdateReferee = (req, res) => {
     .catch(err => console.log(err.message));
 
 
+}
+
+exports.deleteReferee = (req, res) => {
+  const id = req.params.id;
+
+  Referee.findByIdAndDelete(id)
+    .then(result => {
+      res.json({
+        message: 'Referee Deleted'
+      });
+    })
 }

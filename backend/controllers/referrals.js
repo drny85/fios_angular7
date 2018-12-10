@@ -82,8 +82,8 @@ exports.editReferral = (req, res, next) => {
 //update referral
 exports.updateReferral = (req, res, next) => {
   const id = req.params.id;
-  const name = req.body.name;
-  const last_name = req.body.last_name;
+  let name = req.body.name;
+  let last_name = req.body.last_name;
   const address = {
     address: req.body.address.address,
     apt: req.body.address.apt,
@@ -122,10 +122,14 @@ exports.updateReferral = (req, res, next) => {
       new: true
     })
     .populate('referralBy', 'name last_name')
+    .exec()
     .then(referral => {
       referralBy = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
+        name = name.toUpperCase();
+        last_name = last_name.toUpperCase();
+        console.log(name, last_name);
         return transporter.sendMail({
           to: `drny85@icloud.com`,
           from: 'robertm3lendez@gmail.com',
@@ -265,6 +269,7 @@ exports.getReferees = (req, res, next) => {
 
 exports.getAllReferralsById = (req, res) => {
   const id = req.params.id;
+  console.log(id);
   Referral.find({
       referralBy: id
     })
@@ -272,14 +277,16 @@ exports.getAllReferralsById = (req, res) => {
     .sort('moveIn')
     .exec()
     .then(referrals => {
-      console.log('Result;', referrals);
-      const title = 'My Referrals';
-      const path = 'personal referrals'
-      res.render('referrals/personal-referral', {
-        referrals: referrals,
-        title: title,
-        path: path
-      });
+      console.log(referrals);
+      res.json(referrals);
+      // console.log('Result;', referrals);
+      // const title = 'My Referrals';
+      // const path = 'personal referrals'
+      // res.render('referrals/personal-referral', {
+      //   referrals: referrals,
+      //   title: title,
+      //   path: path
+      // });
     })
     .catch(err => console.log(err));
 }
@@ -306,13 +313,14 @@ exports.getReferralsStatus = (req, res) => {
       .then(referrals => {
 
         referrals = [...referrals];
+        res.json(referrals);
 
-        res.render('referrals/my-referrals', {
-          referrals: referrals,
-          title: title,
-          path: path,
-          status: statusRequested
-        });
+        // res.render('referrals/my-referrals', {
+        //   referrals: referrals,
+        //   title: title,
+        //   path: path,
+        //   status: statusRequested
+        // });
       })
       .catch(err => console.log(err));
   } else {
@@ -321,12 +329,13 @@ exports.getReferralsStatus = (req, res) => {
       .exec()
       .then(referrals => {
         referrals = [...referrals];
-        res.render('referrals/my-referrals', {
-          referrals: referrals,
-          title: title,
-          path: path,
-          status: statusRequested
-        });
+        res.json(referrals);
+        // res.render('referrals/my-referrals', {
+        //   referrals: referrals,
+        //   title: title,
+        //   path: path,
+        //   status: statusRequested
+        // });
       })
       .catch(err => console.log(err));
 

@@ -23,4 +23,6 @@ router.get('/edit/:id', refereeController.getEditReferee);
 // post update referee
 router.post('/update/:id', refereeController.postUpdateReferee);
 
+router.delete('/delete/:id', refereeController.deleteReferee);
+
 module.exports = router;

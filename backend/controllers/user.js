@@ -64,6 +64,7 @@ exports.loginUser = (req, res, next) => {
 
                 res.header('x-auth-token', token).json({
                     message: 'Success',
+                    token: token,
                     user: _.pick(user, ['_id', 'name', 'email'])
                 });
             })
