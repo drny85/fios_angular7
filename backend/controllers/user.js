@@ -25,6 +25,7 @@ exports.createUser = (req, res, next) => {
                     return newUser.save()
                         .then(user => {
                             const token = user.generateAuthToken();
+                            user.token = token;
                             res.header('x-auth-token', token).json({
                                 message: 'New user created',
                                 user: _.pick(user, ['name', 'email', '_id'])
@@ -61,10 +62,9 @@ exports.loginUser = (req, res, next) => {
 
                 const token = user.generateAuthToken();
 
-
                 res.header('x-auth-token', token).json({
                     message: 'Success',
-                    token: token,
+                    token,
                     user: _.pick(user, ['_id', 'name', 'email'])
                 });
             })

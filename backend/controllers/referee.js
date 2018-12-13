@@ -57,10 +57,12 @@ exports.postReferee = (req, res, next) => {
       name: name,
       last_name: last_name
     })
-    .then(result => {
-      if (result) {
-        req.flash('error', 'Referee aldeay in Database');
-        res.redirect('/referee/add-referee');
+    .then(referee => {
+      if (referee) {
+
+        return res.status(404).json({
+          message: 'Referee already registered'
+        })
         throw new Error('Referee already in file');
 
       } else {
@@ -72,8 +74,8 @@ exports.postReferee = (req, res, next) => {
           referrals: []
         })
         referee.save()
-          .then((ref) => {
-            res.redirect('/referee/all-referees');
+          .then((referee) => {
+            res.json(referee);
           })
       }
     }).catch(err => console.log(err));

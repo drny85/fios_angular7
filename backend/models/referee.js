@@ -8,16 +8,19 @@ const Schema = mongoose.Schema;
 const refereeSchema = new Schema({
     name: {
         type: String,
+        lowercase: true,
         required: true
     },
     last_name: {
         type: String,
-        lowercase: true
+        lowercase: true.value,
+        required: true
     },
     phone: String,
     email: {
         type: String,
-        lowercase: true
+        lowercase: true,
+        required: true
     },
     referrals: {
         type: [Schema.Types.ObjectId],

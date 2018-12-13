@@ -7,23 +7,25 @@ const path = require('path');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
+const cors = require('cors');
 require('dotenv').config()
 
 const MONGO_URL = 'mongodb://localhost:27017/fios';
 //main app
 const app = express();
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-  );
-  next();
-});
+app.use(cors());
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+//   );
+//   next();
+// });
 
 app.use(helmet());
 //storing sessions
@@ -62,12 +64,13 @@ const referralRoutes = require('./routes/referrals');
 const refereeRoutes = require('./routes/referee');
 const usersRoutes = require('./routes/users');
 const managersRoutes = require('./routes/managers');
+const auth = require('./middlewares/auth');
 
 
 app.use(homeRoutes);
 app.use(reportRoutes);
 app.use(referralRoutes);
-app.use('/referee', refereeRoutes);
+app.use('/referee', auth, refereeRoutes);
 app.use('/user', usersRoutes);
 app.use('/manager', managersRoutes);
 
