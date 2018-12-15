@@ -12,20 +12,38 @@ const transporter = nodemailer.createTransport(transport({
 }));
 
 exports.getReferrals = (req, res, next) => {
-  let title = 'Referrals';
-  let path = 'referrals';
-  Referral.find()
-    .populate('referralBy', 'name last_name')
-    .sort('moveIn')
-    .exec()
-    .then(referrals => {
-      referrals = [...referrals];
-      res.status(200).json({
-        referrals: referrals
-      });
-      // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
-    })
-    .catch(err => console.log(err));
+  if (req.user.roles.isAdmin) {
+    console.log(req.user.roles);
+    Referral.find()
+      .populate('referralBy', 'name last_name')
+      .sort('moveIn')
+      .exec()
+      .then(referrals => {
+        referrals = [...referrals];
+        res.status(200).json({
+          referrals: referrals
+        });
+        // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
+      })
+      .catch(err => console.log(err));
+
+  } else if (req.user.roles.active) {
+    Referral.find({
+        userId: req.user._id
+      })
+      .populate('referralBy', 'name last_name')
+      .sort('moveIn')
+      .exec()
+      .then(referrals => {
+        referrals = [...referrals];
+        res.status(200).json({
+          referrals: referrals
+        });
+        // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
+      })
+      .catch(err => console.log(err));
+  }
+
 
 };
 
@@ -222,6 +240,7 @@ exports.postReferral = (req, res, next) => {
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
+  const userId = req.user._id;
 
   const referral = new Referral({
     name: name,
@@ -232,7 +251,8 @@ exports.postReferral = (req, res, next) => {
     comment: comment,
     referralBy: referralBy,
     status: status,
-    moveIn: moveIn
+    moveIn: moveIn,
+    userId: userId
 
   });
   referral.save()

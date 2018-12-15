@@ -45,6 +45,10 @@ const referralSchema = new Schema({
     manager: {
         type: Schema.Types.ObjectId,
         ref: 'Manager'
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 
 });

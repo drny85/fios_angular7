@@ -69,10 +69,10 @@ const auth = require('./middlewares/auth');
 
 app.use(homeRoutes);
 app.use(reportRoutes);
-app.use(referralRoutes);
+app.use(auth, referralRoutes);
 app.use('/referee', auth, refereeRoutes);
 app.use('/user', usersRoutes);
-app.use('/manager', managersRoutes);
+app.use('/manager', auth, managersRoutes);
 
 mongoose
   .connect(MONGO_URL, {
@@ -81,7 +81,7 @@ mongoose
   .then(result => {
     let PORT = process.env.PORT || 3000;
     app.listen(PORT);
-    console.log('Server started');
+    console.log('Server started and DB Connected');
   })
   .catch(err => {
     console.log(err);
