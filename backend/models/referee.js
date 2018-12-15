@@ -26,6 +26,10 @@ const refereeSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'Referral'
 
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 })
 

@@ -11,6 +11,6 @@ router.post('/newuser', userController.createUser);
 
 router.post('/login', userController.loginUser);
 
-router.get('/me', auth, userController.getUser);
+router.get('/me', userController.getUser);
 
 module.exports = router;

@@ -27,10 +27,10 @@ exports.getAddReferee = (req, res, next) => {
 
 
 exports.getReferees = (req, res, next) => {
-  const title = 'All referees';
-  const path = 'referees';
 
-  Referee.find()
+  Referee.find({
+      userId: req.user._id
+    })
     .then(referees => {
       res.json({
         referees: referees
@@ -50,6 +50,7 @@ exports.postReferee = (req, res, next) => {
   const last_name = req.body.last_name;
   const phone = req.body.phone;
   const email = req.body.email;
+  const userId = req.user._id;
 
 
 
@@ -71,7 +72,8 @@ exports.postReferee = (req, res, next) => {
           last_name: last_name,
           phone: phone,
           email: email,
-          referrals: []
+          referrals: [],
+          userId: userId
         })
         referee.save()
           .then((referee) => {

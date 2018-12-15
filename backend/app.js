@@ -1,4 +1,5 @@
 //jshint esversion:6
+const auth = require('./middlewares/auth');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -64,15 +65,15 @@ const referralRoutes = require('./routes/referrals');
 const refereeRoutes = require('./routes/referee');
 const usersRoutes = require('./routes/users');
 const managersRoutes = require('./routes/managers');
-const auth = require('./middlewares/auth');
+
 
 
 app.use(homeRoutes);
 app.use(reportRoutes);
-app.use(auth, referralRoutes);
-app.use('/referee', auth, refereeRoutes);
+app.use(referralRoutes);
+app.use('/referee', refereeRoutes);
 app.use('/user', usersRoutes);
-app.use('/manager', auth, managersRoutes);
+app.use('/manager', managersRoutes);
 
 mongoose
   .connect(MONGO_URL, {
