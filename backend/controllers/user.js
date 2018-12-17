@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 exports.createUser = (req, res, next) => {
 
@@ -50,7 +50,7 @@ exports.loginUser = (req, res, next) => {
         })
         .then(user => {
             if (!user) return res.status(400).json({
-                message: 'Invalid email or password',
+                message: 'Not User Found',
                 error: true
             });
 
@@ -61,6 +61,8 @@ exports.loginUser = (req, res, next) => {
                 });
 
                 const token = user.generateAuthToken();
+                const decoded = jwt.decode(token);
+                req.user = decoded;
 
                 res.header('x-auth-token', token).json({
                     message: 'Success',
@@ -81,5 +83,26 @@ exports.getUser = (req, res, next) => {
             res.json({
                 user: user
             });
+        })
+
+
+}
+
+exports.getUserById = (req, res, next) => {
+    const id = req.params.id;
+    User.findById(id)
+        .then(user => {
+            res.json(user)
+        }).catch(err => console.log(err));
+}
+
+
+exports.getAllUsers = (req, res, next) => {
+    User.find()
+        .select('-password')
+        .then(users => {
+            res.json(users);
+        }).catch(err => {
+            console.log(err);
         })
 }

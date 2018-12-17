@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport(transport({
 }));
 
 exports.getReferrals = (req, res, next) => {
-  if (req.user.roles.isAdmin) {
+  if (req.user.roles.isAdmin && req.user.roles.active) {
     console.log(req.user.roles);
     Referral.find()
       .populate('referralBy', 'name last_name')
