@@ -10,23 +10,13 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cors = require('cors');
 require('dotenv').config()
+const db_psw = process.env.MONGO_PASSWORD;
 
-const MONGO_URL = 'mongodb://localhost:27017/fios';
+
+const MONGO_URL = `mongodb+srv://melendez:${db_psw}@cluster0-m0t4i.mongodb.net/fios?retryWrites=true`;
 //main app
 const app = express();
 app.use(cors());
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-//   );
-//   next();
-// });
 
 app.use(helmet());
 //storing sessions
@@ -85,5 +75,5 @@ mongoose
     console.log('Server started and DB Connected');
   })
   .catch(err => {
-    console.log(err);
+    console.log(err.message);
   });

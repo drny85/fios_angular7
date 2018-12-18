@@ -61,8 +61,8 @@ exports.loginUser = (req, res, next) => {
                 });
 
                 const token = user.generateAuthToken();
-                const decoded = jwt.decode(token);
-                req.user = decoded;
+                // const decoded = jwt.decode(token);
+                // req.user = decoded;
 
                 res.header('x-auth-token', token).json({
                     message: 'Success',
