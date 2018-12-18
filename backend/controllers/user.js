@@ -6,8 +6,6 @@ const jwt = require('jsonwebtoken');
 exports.createUser = (req, res, next) => {
 
     const body = _.pick(req.body, ['name', 'last_name', 'phone', 'email', 'password']);
-
-    console.log(body);
     User.findOne({
             email: body.email
         })
@@ -105,4 +103,16 @@ exports.getAllUsers = (req, res, next) => {
         }).catch(err => {
             console.log(err);
         })
+}
+
+exports.updateUser = (req, res, next) => {
+    const id = req.body._id;
+    const user = req.body;
+    User.findByIdAndUpdate(id, user, {
+            new: true
+        })
+        .then(user => {
+            res.json(user);
+        })
+        .catch(err => console.log(err));
 }

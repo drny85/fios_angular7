@@ -12,10 +12,14 @@ router.post('/newuser', userController.createUser);
 
 router.post('/login', userController.loginUser);
 
+router.get('/all', auth, admin, userController.getAllUsers);
+
+router.put('/update', auth, admin, userController.updateUser);
+
 router.get('/me', auth, userController.getUser);
 
 router.get('/:id', auth, userController.getUserById);
 
-router.get('/all', auth, admin, userController.getAllUsers);
+
 
 module.exports = router;

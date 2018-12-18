@@ -1,5 +1,4 @@
 //jshint esversion:6
-const auth = require('./middlewares/auth');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -10,23 +9,12 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cors = require('cors');
 require('dotenv').config()
+const db_pws = process.env.MY_MONGO_PASSWORD;
 
-const MONGO_URL = 'mongodb://localhost:27017/fios';
+const MONGO_URL = `mongodb+srv://melendez:${db_pws}@cluster0-m0t4i.mongodb.net/fios`;
 //main app
 const app = express();
 app.use(cors());
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-//   );
-//   next();
-// });
 
 app.use(helmet());
 //storing sessions
@@ -47,11 +35,8 @@ app.use(
 //flash messages
 app.use(flash());
 
-// set views engine 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
-//midlewares
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -59,16 +44,12 @@ app.use(bodyParser.json());
 
 
 // setting routes
-const homeRoutes = require('./routes/home');
 const reportRoutes = require('./routes/reports');
 const referralRoutes = require('./routes/referrals');
 const refereeRoutes = require('./routes/referee');
 const usersRoutes = require('./routes/users');
 const managersRoutes = require('./routes/managers');
 
-
-
-app.use(homeRoutes);
 app.use(reportRoutes);
 app.use(referralRoutes);
 app.use('/referee', refereeRoutes);

@@ -1,6 +1,17 @@
+const User = require('../models/user');
 module.exports = function (req, res, next) {
+    User.findById(req.user._id)
+        .select('roles')
+        .then(
+            user => {
 
-    if (!req.user.roles.isAdmin) return res.status(403).send('Access denied');
+                if (!user.roles.isAdmin) return res.status(403).send('Access denied');
 
-    next();
+                next();
+            }
+        ).catch(err => {
+            next(err)
+        });
+
+
 }
