@@ -9,9 +9,16 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cors = require('cors');
 require('dotenv').config()
+<<<<<<< HEAD
 const db_pws = process.env.MY_MONGO_PASSWORD;
 
 const MONGO_URL = `mongodb+srv://melendez:${db_pws}@cluster0-m0t4i.mongodb.net/fios`;
+=======
+const db_psw = process.env.MONGO_PASSWORD;
+
+
+const MONGO_URL = `mongodb+srv://melendez:${db_psw}@cluster0-m0t4i.mongodb.net/fios?retryWrites=true`;
+>>>>>>> 1a7a56059da9932ba4ca472cf4f38301b354f244
 //main app
 const app = express();
 app.use(cors());
@@ -66,5 +73,5 @@ mongoose
     console.log('Server started and DB Connected');
   })
   .catch(err => {
-    console.log(err);
+    console.log(err.message);
   });
