@@ -55,6 +55,9 @@ const userSchema = new Schema({
     coach: {
         type: Schema.Types.ObjectId,
         ref: 'Coach'
+    },
+    title: {
+        type: String
     }
 
 
@@ -65,11 +68,7 @@ userSchema.methods.generateAuthToken = function () {
         _id: this._id,
         roles: this.roles
     }, process.env.MY_JWT_PRIVATE_KEY, {
-<<<<<<< HEAD
         expiresIn: '2hr'
-=======
-        expiresIn: '4hr'
->>>>>>> 1a7a56059da9932ba4ca472cf4f38301b354f244
     });
 
     return token;

@@ -29,8 +29,8 @@ const referralSchema = new Schema({
         type: String,
         lowercase: true
     },
-    moveIn: Date,
-    due_date: Date,
+    moveIn: String,
+    due_date: String,
     order_date: Date,
     package: String,
     mon: String,
@@ -47,6 +47,10 @@ const referralSchema = new Schema({
         ref: 'Manager'
     },
     userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    coach: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }

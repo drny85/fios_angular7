@@ -16,6 +16,7 @@ exports.getReferrals = (req, res, next) => {
     console.log(req.user.roles);
     Referral.find()
       .populate('referralBy', 'name last_name')
+      .populate('manager', 'email name last_name')
       .sort('moveIn')
       .exec()
       .then(referrals => {
@@ -32,6 +33,7 @@ exports.getReferrals = (req, res, next) => {
         userId: req.user._id
       })
       .populate('referralBy', 'name last_name')
+      .populate('manager', 'email name last_name')
       .sort('moveIn')
       .exec()
       .then(referrals => {
@@ -51,6 +53,7 @@ exports.getReferral = (req, res, next) => {
   const id = req.params.id;
   Referral.findById(id)
     .populate('referralBy', 'name last_name _id')
+    .populate('manager', 'email name last_name')
     .then(referral => {
       let title = "Details";
       let path = 'details';
@@ -110,7 +113,7 @@ exports.updateReferral = (req, res, next) => {
   };
   const email = req.body.email;
   const phone = req.body.phone;
-  const Referee = req.body.Referee;
+  const referralBy= req.body.referralBy;
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
@@ -118,7 +121,8 @@ exports.updateReferral = (req, res, next) => {
   const due_date = req.body.due_date;
   const order_date = req.body.order_date;
   const package = req.body.package;
-  let referralBy;
+  const manager = req.body.manager;
+  let referee;
 
   Referral.findOneAndUpdate({
       _id: id
@@ -129,27 +133,29 @@ exports.updateReferral = (req, res, next) => {
       email: email,
       phone: phone,
       comment: comment,
-      Referee: Referee,
+      referralBy: referralBy,
       status: status,
       due_date: due_date,
       order_date: order_date,
       package: package,
       mon: mon,
-      moveIn: moveIn
+      moveIn: moveIn,
+      manager: manager
     }, {
       new: true
     })
     .populate('referralBy', 'name last_name')
+    .populate('manager', 'email name last_name')
     .exec()
     .then(referral => {
-      referralBy = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
+      referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
         last_name = last_name.toUpperCase();
-        console.log(name, last_name);
+        let to = [referral.manager.email, 'drny85@icloud.com'];
         return transporter.sendMail({
-          to: `drny85@icloud.com`,
+          to: to,
           from: 'robertm3lendez@gmail.com',
           cc: 'robert.melendez@drascosales.com',
           subject: `Referral Closed Notification!`,
@@ -186,7 +192,7 @@ exports.updateReferral = (req, res, next) => {
                                     <li class="collection-item">Phone: ${phone}</li>
                                     <li class="collection-item">Email: ${email}</li>
                                     <li class="collection-item">Move In: ${moveIn}</li>
-                                    <li style="text-transform:capitalize;" class="collection-item">Referral By: ${referralBy}</li>
+                                    <li style="text-transform:capitalize;" class="collection-item">Referral By: ${referee}</li>
         
                                   </ul>
                                 <div style="margin-bottom:100px; class="z-depth-3">
@@ -241,6 +247,7 @@ exports.postReferral = (req, res, next) => {
   const status = req.body.status;
   const moveIn = req.body.moveIn;
   const userId = req.user._id;
+  const manager = req.body.manager;
 
   const referral = new Referral({
     name: name,
@@ -252,7 +259,8 @@ exports.postReferral = (req, res, next) => {
     referralBy: referralBy,
     status: status,
     moveIn: moveIn,
-    userId: userId
+    userId: userId,
+    manager: manager
 
   });
   referral.save()
