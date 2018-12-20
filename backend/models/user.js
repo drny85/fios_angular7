@@ -54,7 +54,7 @@ const userSchema = new Schema({
     vendor: String,
     coach: {
         type: Schema.Types.ObjectId,
-        ref: 'Coach'
+        ref: 'User'
     },
     title: {
         type: String

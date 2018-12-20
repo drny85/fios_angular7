@@ -88,6 +88,9 @@ exports.getUser = (req, res, next) => {
 exports.getUserById = (req, res, next) => {
     const id = req.params.id;
     User.findById(id)
+        .select('-password')
+        .populate('coach', 'email name last_name')
+        .exec()
         .then(user => {
             res.json(user)
         }).catch(err => console.log(err));
@@ -97,6 +100,8 @@ exports.getUserById = (req, res, next) => {
 exports.getAllUsers = (req, res, next) => {
     User.find()
         .select('-password')
+        .populate('coach', 'name last_name email')
+        .exec()
         .then(users => {
             res.json(users);
         }).catch(err => {
@@ -107,11 +112,30 @@ exports.getAllUsers = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const id = req.body._id;
     const user = req.body;
+    console.log(user);
     User.findByIdAndUpdate(id, user, {
             new: true
         })
+        .populate('coach', 'name last_name email')
+    exec()
         .then(user => {
+            console.log(user);
             res.json(user);
+        })
+        .catch(err => console.log(err));
+}
+
+exports.deleteUser = (req, res, next) => {
+    const userId = req.params.id;
+    User.findOne({
+            _id: id
+        })
+        .then(u => {
+            if (!u) return res.status(400).json({
+                message: 'Not user found'
+            });
+
+            res.json(u);
         })
         .catch(err => console.log(err));
 }

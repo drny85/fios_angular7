@@ -20,6 +20,8 @@ router.get('/me', auth, userController.getUser);
 // GET user by ID
 router.get('/:id', auth, userController.getUserById);
 
+router.delete('/:id', auth, admin, userController.deleteUser);
+
 
 
 module.exports = router;
