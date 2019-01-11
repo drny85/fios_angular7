@@ -12,7 +12,7 @@ router.get('/referrals', auth, referralController.getReferrals);
 //adding a new referral 
 router.get('/add-referral', auth, referralController.getAddReferral);
 //adding referral route
-router.post('/add-referral', auth, referralController.postReferral);
+router.post('/add-referral', auth, referralController.addReferral);
 // referral detail route
 router.get('/detail/:id', auth, referralController.getReferral);
 //editing referral route

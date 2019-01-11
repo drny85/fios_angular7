@@ -27,22 +27,30 @@ exports.getAddReferee = (req, res, next) => {
 
 
 exports.getReferees = (req, res, next) => {
+  if (req.user.roles.caoch || req.user.roles.isAdmin) {
 
-  Referee.find({
-      userId: req.user._id
-    })
-    .then(referees => {
-      res.json({
-        referees: referees
-      });
-      // res.render('referee/all-referees', {
-      //   referees: referees,
-      //   title: title,
-      //   path: path
-      // });
-    })
-    .catch(err => console.log(err));
+    Referee.find()
+      .then(referees => {
+        res.json(referees);
+        //console.log(referees);
+      })
+      .catch(err => next(err));
+
+  } else {
+
+    Referee.find({
+        userId: req.user._id
+      })
+      .then(referees => {
+        res.json(referees);
+
+      })
+      .catch(err => console.log(err));
+  }
+
+
 }
+
 
 //post Referee or referee
 exports.postReferee = (req, res, next) => {

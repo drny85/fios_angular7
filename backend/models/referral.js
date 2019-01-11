@@ -53,6 +53,14 @@ const referralSchema = new Schema({
     coach: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    updatedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    updated: {
+        type: String
+
     }
 
 });

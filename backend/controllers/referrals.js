@@ -17,6 +17,7 @@ exports.getReferrals = (req, res, next) => {
     Referral.find()
       .populate('referralBy', 'name last_name')
       .populate('manager', 'email name last_name')
+      .populate('updatedBy', 'name last_name')
       .sort('moveIn')
       .exec()
       .then(referrals => {
@@ -34,6 +35,7 @@ exports.getReferrals = (req, res, next) => {
       })
       .populate('referralBy', 'name last_name')
       .populate('manager', 'email name last_name')
+      .populate('updatedBy', 'name last_name')
       .sort('moveIn')
       .exec()
       .then(referrals => {
@@ -54,6 +56,7 @@ exports.getReferral = (req, res, next) => {
   Referral.findById(id)
     .populate('referralBy', 'name last_name _id')
     .populate('manager', 'email name last_name')
+    .populate('updatedBy', 'name last_name')
     .then(referral => {
       let title = "Details";
       let path = 'details';
@@ -113,7 +116,7 @@ exports.updateReferral = (req, res, next) => {
   };
   const email = req.body.email;
   const phone = req.body.phone;
-  const referralBy= req.body.referralBy;
+  const referralBy = req.body.referralBy;
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
@@ -122,6 +125,7 @@ exports.updateReferral = (req, res, next) => {
   const order_date = req.body.order_date;
   const package = req.body.package;
   const manager = req.body.manager;
+  const updated = req.body.updated;
   let referee;
 
   Referral.findOneAndUpdate({
@@ -140,12 +144,15 @@ exports.updateReferral = (req, res, next) => {
       package: package,
       mon: mon,
       moveIn: moveIn,
-      manager: manager
+      manager: manager,
+      updated: updated,
+      updatedBy: req.user._id
     }, {
       new: true
     })
     .populate('referralBy', 'name last_name')
     .populate('manager', 'email name last_name')
+    .populate('updatedBy', 'name last_name')
     .exec()
     .then(referral => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
@@ -231,7 +238,7 @@ exports.deleteReferral = (req, res, next) => {
 }
 
 //adding the referral handler page
-exports.postReferral = (req, res, next) => {
+exports.addReferral = (req, res, next) => {
   const name = req.body.name;
   const last_name = req.body.last_name;
   const address = {
@@ -246,7 +253,13 @@ exports.postReferral = (req, res, next) => {
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
-  const userId = req.user._id;
+  let userId;
+  if (req.body.userId) {
+    userId = req.body.userId;
+  } else {
+    userId = req.user._id;
+  }
+
   const manager = req.body.manager;
 
   const referral = new Referral({
@@ -265,12 +278,12 @@ exports.postReferral = (req, res, next) => {
   });
   referral.save()
     .then(result => {
+      res.json(result);
       return Referee.findById(referralBy)
     }).then(ref => {
 
       ref.referrals.push(referral._id);
       ref.save();
-      res.redirect('/referrals')
     })
     .catch(err => console.log(err));
 
@@ -278,26 +291,9 @@ exports.postReferral = (req, res, next) => {
 };
 
 
-exports.getReferees = (req, res, next) => {
-  const title = 'All referees';
-  const path = 'referees';
-
-
-  Referee.find()
-    .then(referees => {
-
-      res.render('referrals/all-referees', {
-        referees: referees,
-        title: title,
-        path: path
-      });
-    })
-    .catch(err => console.log(err));
-}
-
 exports.getAllReferralsById = (req, res) => {
   const id = req.params.id;
-  console.log(id);
+
   Referral.find({
       referralBy: id
     })
@@ -305,7 +301,7 @@ exports.getAllReferralsById = (req, res) => {
     .sort('moveIn')
     .exec()
     .then(referrals => {
-      console.log(referrals);
+
       res.json(referrals);
       // console.log('Result;', referrals);
       // const title = 'My Referrals';
