@@ -139,3 +139,22 @@ exports.deleteUser = (req, res, next) => {
         })
         .catch(err => console.log(err));
 }
+
+exports.getCoaches = (req, res) => {
+    const id = req.user._id;
+    User.find()
+        .select('-password')
+        .then(coach => {
+                console.log(coach);
+                if (!coach) return res.status(400).json({
+                    message: 'Not coaches found'
+                });
+
+                res.json(coach);
+            }
+
+        ).catch(err => console.log(err))
+
+
+
+}

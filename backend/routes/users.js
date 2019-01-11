@@ -12,6 +12,8 @@ router.post('/newuser', userController.createUser);
 //POST Longin user
 router.post('/login', userController.loginUser);
 
+router.get('/coaches', auth, userController.getCoaches);
+
 router.get('/all', auth, admin, userController.getAllUsers);
 // PUT Update user
 router.put('/update', auth, admin, userController.updateUser);
@@ -19,6 +21,8 @@ router.put('/update', auth, admin, userController.updateUser);
 router.get('/me', auth, userController.getUser);
 // GET user by ID
 router.get('/:id', auth, userController.getUserById);
+
+
 
 router.delete('/:id', auth, admin, userController.deleteUser);
 

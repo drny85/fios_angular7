@@ -31,7 +31,7 @@ const referralSchema = new Schema({
     },
     moveIn: String,
     due_date: String,
-    order_date: Date,
+    order_date: String,
     package: String,
     mon: String,
     date_entered: {
