@@ -3,9 +3,21 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const {
+    validationResult
+} = require('express-validator/check');
+
+
 exports.createUser = (req, res, next) => {
 
-    const body = _.pick(req.body, ['name', 'last_name', 'phone', 'email', 'password']);
+    const body = _.pick(req.body, ['name', 'last_name', 'phone', 'email', 'password', 'password1']);
+    console.log(body.password, body.password1);
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json(errors.array());
+    }
+
     User.findOne({
             email: body.email
         })
@@ -112,14 +124,14 @@ exports.getAllUsers = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const id = req.body._id;
     const user = req.body;
-    console.log(user);
+
     User.findByIdAndUpdate(id, user, {
             new: true
         })
         .populate('coach', 'name last_name email')
-    exec()
+        .exec()
         .then(user => {
-            console.log(user);
+
             res.json(user);
         })
         .catch(err => console.log(err));
@@ -145,7 +157,7 @@ exports.getCoaches = (req, res) => {
     User.find()
         .select('-password')
         .then(coach => {
-                console.log(coach);
+
                 if (!coach) return res.status(400).json({
                     message: 'Not coaches found'
                 });
