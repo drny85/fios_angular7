@@ -37,7 +37,12 @@ router.post('/newuser', [
     })
 ], userController.createUser);
 //POST Longin user
-router.post('/login', userController.loginUser);
+router.post('/login', [
+    check('email').isEmail().trim().withMessage('Invalid email').normalizeEmail(),
+    check('password').trim().isLength({
+        min: 6
+    }).withMessage('Invalid password')
+], userController.loginUser);
 
 router.get('/coaches', auth, userController.getCoaches);
 

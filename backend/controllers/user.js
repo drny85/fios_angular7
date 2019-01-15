@@ -12,7 +12,6 @@ exports.createUser = (req, res, next) => {
 
     const body = _.pick(req.body, ['name', 'last_name', 'phone', 'email', 'password', 'password1']);
 
-    console.log(body.password, body.password1);
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -56,6 +55,11 @@ exports.loginUser = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json(errors.array());
+    }
+
     User.findOne({
             email: email
         })
@@ -87,7 +91,9 @@ exports.loginUser = (req, res, next) => {
 exports.getUser = (req, res, next) => {
     const userId = req.user._id;
     User.findById(userId)
+        .populate('coach', 'name last_name email')
         .select('-password')
+        .exec()
         .then(user => {
 
             res.json({
@@ -154,7 +160,7 @@ exports.deleteUser = (req, res, next) => {
         .catch(err => console.log(err));
 }
 
-exports.getCoaches = (req, res) => {
+exports.getCoaches = (req, res, next) => {
     const id = req.user._id;
     User.find()
         .select('-password')
@@ -164,10 +170,11 @@ exports.getCoaches = (req, res) => {
                     message: 'Not coaches found'
                 });
 
+                coach = coach.filter(u => u.roles.coach);
                 res.json(coach);
             }
 
-        ).catch(err => console.log(err))
+        ).catch(err => next(err))
 
 
 
