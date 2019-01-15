@@ -3,6 +3,7 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
 const {
     validationResult
 } = require('express-validator/check');
@@ -34,12 +35,14 @@ exports.createUser = (req, res, next) => {
                     newUser.password = hashed;
                     return newUser.save()
                         .then(user => {
+
                             const token = user.generateAuthToken();
                             user.token = token;
                             res.header('x-auth-token', token).json({
                                 message: 'New user created',
                                 user: _.pick(user, ['name', 'email', '_id'])
                             });
+                            return
                         })
                 })
             })

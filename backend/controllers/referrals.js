@@ -22,9 +22,7 @@ exports.getReferrals = (req, res, next) => {
       .exec()
       .then(referrals => {
         referrals = [...referrals];
-        res.status(200).json({
-          referrals: referrals
-        });
+        res.status(200).json(referrals);
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
       })
       .catch(err => console.log(err));
@@ -40,9 +38,7 @@ exports.getReferrals = (req, res, next) => {
       .exec()
       .then(referrals => {
         referrals = [...referrals];
-        res.status(200).json({
-          referrals: referrals
-        });
+        res.status(200).json(referrals);
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
       })
       .catch(err => console.log(err));
@@ -57,12 +53,12 @@ exports.getReferral = (req, res, next) => {
     .populate('referralBy', 'name last_name _id')
     .populate('manager', 'email name last_name')
     .populate('updatedBy', 'name last_name')
+    .populate('coach', 'name last_name email')
+    .exec()
     .then(referral => {
       let title = "Details";
       let path = 'details';
-      return res.status(200).json({
-        referral: referral
-      });
+      return res.status(200).json(referral);
       // res.render('referrals/referral-detail', { referral: referral, title: title, path: path});
     }).catch(err => console.log(err));
 };
@@ -91,14 +87,8 @@ exports.editReferral = (req, res, next) => {
       _id: id
     })
     .then(referral => {
-      return res.json({
-        referral: referral
-      });
-      res.render('referrals/referral-edit', {
-        referral: referral,
-        title: "Editing",
-        path: 'editing'
-      });
+      return res.json(referral);
+
     })
     .catch(err => console.log(err));
 };
@@ -125,6 +115,7 @@ exports.updateReferral = (req, res, next) => {
   const order_date = req.body.order_date;
   const package = req.body.package;
   const manager = req.body.manager;
+  const coach = req.body.coach;
   const updated = req.body.updated;
   let referee;
 
@@ -145,6 +136,7 @@ exports.updateReferral = (req, res, next) => {
       mon: mon,
       moveIn: moveIn,
       manager: manager,
+      coach: coach,
       updated: updated,
       updatedBy: req.user._id
     }, {
@@ -153,6 +145,7 @@ exports.updateReferral = (req, res, next) => {
     .populate('referralBy', 'name last_name')
     .populate('manager', 'email name last_name')
     .populate('updatedBy', 'name last_name')
+    .populate('coach', 'name last_name email')
     .exec()
     .then(referral => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
@@ -161,10 +154,11 @@ exports.updateReferral = (req, res, next) => {
         name = name.toUpperCase();
         last_name = last_name.toUpperCase();
         let to = [referral.manager.email, 'drny85@icloud.com'];
+        let cc = referral.coach.email;
         return transporter.sendMail({
           to: to,
           from: 'robertm3lendez@gmail.com',
-          cc: 'robert.melendez@drascosales.com',
+          cc: cc,
           subject: `Referral Closed Notification!`,
           html: `
         <!DOCTYPE html>
@@ -253,11 +247,14 @@ exports.addReferral = (req, res, next) => {
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
+  let coach;
   let userId;
   if (req.body.userId) {
     userId = req.body.userId;
+    coach = req.body.coach;
   } else {
     userId = req.user._id;
+    coach = req.user.coach._id;
   }
 
   const manager = req.body.manager;
@@ -273,6 +270,7 @@ exports.addReferral = (req, res, next) => {
     status: status,
     moveIn: moveIn,
     userId: userId,
+    coach: coach,
     manager: manager
 
   });

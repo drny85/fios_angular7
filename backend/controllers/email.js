@@ -1,21 +1,11 @@
-const send_email = require('@sendgrid/mail');
-send_email.setApiKey(process.env.SENDGRID_API_KEY);
+const nodemailer = require('nodemailer');
+const transport = require('nodemailer-sendgrid-transport');
 
-const SEND_MAIL = (to, from, subject, html) => {
+const transporter = nodemailer.createTransport(transport({
+    auth: {
+        api_key: process.env.SENDGRID_API_KEY
 
-    const msg = {
-        to: to,
-        from : from,
-        subject: subject,
-        html: html
     }
+}));
 
-    send_email.send(msg);
-  
-
-}
-
-
-
-exports = SEND_MAIL;
-
+module.exports = transporter;
