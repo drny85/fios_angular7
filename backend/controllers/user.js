@@ -11,6 +11,7 @@ const {
 exports.createUser = (req, res, next) => {
 
     const body = _.pick(req.body, ['name', 'last_name', 'phone', 'email', 'password', 'password1']);
+
     console.log(body.password, body.password1);
 
     const errors = validationResult(req);
@@ -129,6 +130,7 @@ exports.updateUser = (req, res, next) => {
             new: true
         })
         .populate('coach', 'name last_name email')
+        .populate('manager', 'name last_name email')
         .exec()
         .then(user => {
 

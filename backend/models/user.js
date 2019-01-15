@@ -51,7 +51,9 @@ const userSchema = new Schema({
         type: Schema.Types.Array,
         ref: 'Manager'
     },
-    vendor: String,
+    vendor: {
+        type: String
+    },
     coach: {
         type: Schema.Types.ObjectId,
         ref: 'User'
