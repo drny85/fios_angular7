@@ -50,12 +50,14 @@ const referralRoutes = require('./routes/referrals');
 const refereeRoutes = require('./routes/referee');
 const usersRoutes = require('./routes/users');
 const managersRoutes = require('./routes/managers');
+const notesRoutes = require('./routes/notes');
 
 app.use(reportRoutes);
 app.use(referralRoutes);
 app.use('/referee', refereeRoutes);
 app.use('/user', usersRoutes);
 app.use('/manager', managersRoutes);
+app.use('/notes', notesRoutes);
 
 mongoose
   .connect(MONGO_URL, {
