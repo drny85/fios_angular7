@@ -173,43 +173,45 @@ exports.updateReferral = (req, res, next) => {
              <!--Import Google Icon Font-->
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
                 <!--Import materialize.css-->
-               <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
           
                  <!--Let browser know website is optimized for mobile-->
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             <title></title>
         </head>
         <body>
-        
-            <div class="z-depth-4 row">
-                <div class="card col s12">
-                    <h4 class="center">Bellow Referral has been closed!</h4>
-                    <div>
-                            <ul class="collection with-header">
-                                    <li style="text-transform:capitalize;" class="collection-header"><h4>${name} ${last_name}</h4></li>
-                                    <li style="text-transform:uppercase;" class="collection-item">MON: <b>${mon}</b></li>
-                                    <li  class="collection-item">Due Date: ${due_date}</li>
-                                    <li class="collection-item">Order Placed On: ${order_date}</li>
-                                    <li class="collection-item">Package: ${package}</li>
-                                    <li style="text-transform:capitalize;" class="collection-item">Address: ${address.address}</li>
-                                    <li style="text-transform:capitalize;" class="collection-item">City: ${address.city}</li>
-                                    <li class="collection-item">Phone: ${phone}</li>
-                                    <li class="collection-item">Email: ${email}</li>
-                                    <li class="collection-item">Move In: ${moveIn}</li>
-                                    <li style="text-transform:capitalize;" class="collection-item">Referral By: ${referee}</li>
-        
-                                  </ul>
-                                <div style="margin-bottom:100px; class="z-depth-3">
-                                    <h5 class="grey center">Notes or Comments</h5>
-                                    <p style="padding: 10px" class="center-align">${comment}</p>
-                                </div>
-        
+        <div class="container" style="margin: 0 auto;width: 80%;">
+            <div class="card" style="-webkit-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);-moz-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);background: #fff;">
+                <div class="card-title">
+                    <h2 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;">This referral has been closed</h2>
+                    <div class="main_body" style="padding: 1rem;background: rgba(248, 246, 246, 0.541);">
+                        <h3 class="center pd" style="text-align: center;padding: 10px;">Customer Name</h3>
+                        <ul style="margin: 0 auto;">
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${due_date}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${order_placed}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Address: ${address.address}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Apt: ${address.apt}</li>
+                            <li style="text-decoration: none; text-transform: capitalize; list-style: none;padding: 0.8rem;margin: 0 auto;">City: ${address.city}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Phone: ${phone}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Email: ${email}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Move In: ${moveIn}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Referral By: ${referralBy}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Status: ${status}</li>
+                        </ul>
+    
+                    </div>
+                    <div class="comment card" style="-webkit-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);-moz-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);background: rgb(158, 158, 158);padding: 1rem;">
+                        <h3>Commets or Notes:</h3>
+                        <p style="text-align: left;font-size: 1.1rem;padding: 10px;line-height: 1.5;">
+                        ${comment}
+                            </p>
                     </div>
                 </div>
-                
+    
             </div>
-            
-        </body>
+        </div>
+    
+    </body>
         </html>
         `
 
