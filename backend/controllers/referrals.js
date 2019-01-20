@@ -95,7 +95,7 @@ exports.editReferral = (req, res, next) => {
 
 //update referral
 exports.updateReferral = (req, res, next) => {
-  console.log('User;', req.user);
+  console.log('User;', req.body.coach);
   const id = req.params.id;
   let name = req.body.name;
   let last_name = req.body.last_name;
@@ -150,13 +150,14 @@ exports.updateReferral = (req, res, next) => {
     .exec()
     .then(referral => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
+      console.log(referral);
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
         from = req.user.email;
         last_name = last_name.toUpperCase();
         let to = [referral.manager.email, 'drny85@icloud.com'];
-        let cc = [referral.coach.email];
+        let cc = [referral.coach.email, req.user.email];
 
         return transporter.sendMail({
           to: to,
@@ -184,18 +185,18 @@ exports.updateReferral = (req, res, next) => {
                 <div class="card-title">
                     <h2 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;">This referral has been closed</h2>
                     <div class="main_body" style="padding: 1rem;background: rgba(248, 246, 246, 0.541);">
-                        <h3 class="center pd" style="text-align: center;padding: 10px;">Customer Name</h3>
+                        <h3 class="center pd" style="text-align: center;padding: 10px; text-transform: capitalize;">${name} ${last_name}</h3>
                         <ul style="margin: 0 auto;">
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${due_date}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${order_placed}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${order_date}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Address: ${address.address}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Apt: ${address.apt}</li>
                             <li style="text-decoration: none; text-transform: capitalize; list-style: none;padding: 0.8rem;margin: 0 auto;">City: ${address.city}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Phone: ${phone}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Email: ${email}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Move In: ${moveIn}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Referral By: ${referralBy}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Referral By: ${referee}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Status: ${status}</li>
                         </ul>
     
