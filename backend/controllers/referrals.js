@@ -95,6 +95,7 @@ exports.editReferral = (req, res, next) => {
 
 //update referral
 exports.updateReferral = (req, res, next) => {
+  console.log('User;', req.user);
   const id = req.params.id;
   let name = req.body.name;
   let last_name = req.body.last_name;
@@ -152,12 +153,14 @@ exports.updateReferral = (req, res, next) => {
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
+        from = req.user.email;
         last_name = last_name.toUpperCase();
         let to = [referral.manager.email, 'drny85@icloud.com'];
-        let cc = referral.coach.email;
+        let cc = [referral.coach.email];
+
         return transporter.sendMail({
           to: to,
-          from: 'robertm3lendez@gmail.com',
+          from: from,
           cc: cc,
           subject: `Referral Closed Notification!`,
           html: `

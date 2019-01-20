@@ -68,7 +68,8 @@ const userSchema = new Schema({
 userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id,
-        roles: this.roles
+        roles: this.roles,
+        email: this.email
     }, process.env.MY_JWT_PRIVATE_KEY);
 
     return token;
