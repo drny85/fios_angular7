@@ -95,7 +95,7 @@ exports.editReferral = (req, res, next) => {
 
 //update referral
 exports.updateReferral = (req, res, next) => {
-  console.log('User;', req.body.coach);
+
   const id = req.params.id;
   let name = req.body.name;
   let last_name = req.body.last_name;
@@ -150,7 +150,7 @@ exports.updateReferral = (req, res, next) => {
     .exec()
     .then(referral => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
-      console.log(referral);
+
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
