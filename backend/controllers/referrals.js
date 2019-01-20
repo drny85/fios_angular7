@@ -154,8 +154,8 @@ exports.updateReferral = (req, res, next) => {
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
+        last_name = last_name.toUpperCase()
         from = req.user.email;
-        last_name = last_name.toUpperCase();
         let to = [referral.manager.email, 'drny85@icloud.com'];
         let cc = [referral.coach.email, req.user.email];
 
@@ -180,24 +180,24 @@ exports.updateReferral = (req, res, next) => {
             <title></title>
         </head>
         <body>
-        <div class="container" style="margin: 0 auto;width: 80%;">
+        <div class="container" style="margin: 0 auto;width: 100%;">
             <div class="card" style="-webkit-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);-moz-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);background: #fff;">
                 <div class="card-title">
-                    <h2 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;">This referral has been closed</h2>
+                    <h2 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;text-transform: capitalize;">This referral has been closed</h2>
                     <div class="main_body" style="padding: 1rem;background: rgba(248, 246, 246, 0.541);">
                         <h3 class="center pd" style="text-align: center;padding: 10px; text-transform: capitalize;">${name} ${last_name}</h3>
                         <ul style="margin: 0 auto;">
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${due_date}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${order_date}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Address: ${address.address}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${new Date(due_date).toLocaleDateString()}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${new Date(order_date).toLocaleDateString()}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Address: ${address.address}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Apt: ${address.apt}</li>
                             <li style="text-decoration: none; text-transform: capitalize; list-style: none;padding: 0.8rem;margin: 0 auto;">City: ${address.city}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Phone: ${phone}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Email: ${email}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Move In: ${moveIn}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Referral By: ${referee}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Status: ${status}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Referral By: ${referee}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Status: ${status}</li>
                         </ul>
     
                     </div>
