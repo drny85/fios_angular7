@@ -1,14 +1,18 @@
 //jshint esversion:6
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
-const transport = require('nodemailer-sendgrid-transport');
 
-const transporter = nodemailer.createTransport(transport({
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    api_key: process.env.SENDGRID_API_KEY
+
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PSW
 
   }
-}));
+});
 
 
 exports.sendNithlyReport = (req, res, next) => {
@@ -42,7 +46,8 @@ exports.sendNithlyReport = (req, res, next) => {
     <td style="-webkit-box-sizing: inherit;box-sizing: inherit;padding: 15px 5px;display: table-cell;text-align: center;vertical-align: inherit;border-radius: 2px;border: none;">${new Date(ref.due_date).toDateString()}</td>
     <td style="-webkit-box-sizing: inherit;box-sizing: inherit;padding: 15px 5px;display: table-cell;text-align: center;vertical-align: inherit;border-radius: 2px;border: none;">${ref.package}</td>
     </tr>`;
-    emailsCC.push(ref.manager.email);
+    if (!emailsCC.includes(ref.manager.email))
+      emailsCC.push(ref.manager.email);
   });
 
   console.log(emailsCC);
@@ -115,7 +120,7 @@ exports.sendNithlyReport = (req, res, next) => {
         html: emailBody
       }, (err, info) => {
         console.log(err);
-        console.log(info);
+        console.log(info.envelope);
       });
     })
     .catch(err => next(err))

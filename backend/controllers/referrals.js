@@ -2,14 +2,18 @@
 const Referral = require('../models/referral');
 const Referee = require('../models/referee');
 const nodemailer = require('nodemailer');
-const transport = require('nodemailer-sendgrid-transport');
 
-const transporter = nodemailer.createTransport(transport({
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
-    api_key: process.env.SENDGRID_API_KEY
+
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PSW
 
   }
-}));
+});
 
 exports.getReferrals = (req, res, next) => {
   if (req.user.roles.isAdmin && req.user.roles.active) {
