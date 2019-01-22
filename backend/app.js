@@ -52,7 +52,7 @@ const usersRoutes = require('./routes/users');
 const managersRoutes = require('./routes/managers');
 const notesRoutes = require('./routes/notes');
 
-app.use(reportRoutes);
+app.use('/report', reportRoutes);
 app.use(referralRoutes);
 app.use('/referee', refereeRoutes);
 app.use('/user', usersRoutes);

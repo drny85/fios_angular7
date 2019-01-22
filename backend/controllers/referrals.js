@@ -34,6 +34,7 @@ exports.getReferrals = (req, res, next) => {
       .populate('referralBy', 'name last_name')
       .populate('manager', 'email name last_name')
       .populate('updatedBy', 'name last_name')
+      .populate('coach', 'name last_name email')
       .sort('moveIn')
       .exec()
       .then(referrals => {
@@ -186,9 +187,9 @@ exports.updateReferral = (req, res, next) => {
         <div class="container" style="margin: 0 auto;width: 100%;">
             <div class="card" style="-webkit-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);-moz-box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);box-shadow: 13px 11px 5px -1px rgba(0, 0, 0, 0.3);background: #fff;">
                 <div class="card-title">
-                    <h2 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;text-transform: capitalize;">This referral has been closed</h2>
+                    <h3 class="center" style="text-align: center;font-family: sans-serif;font-size: 1.7rem;text-transform: capitalize;">This referral has been closed</h3>
                     <div class="main_body" style="padding: 1rem;background: rgba(248, 246, 246, 0.541);">
-                        <h3 class="center pd" style="text-align: center;padding: 10px; text-transform: capitalize;">${name} ${last_name}</h3>
+                        <h2 class="center pd" style="text-align: center;padding: 10px; text-transform: capitalize;">${name} ${last_name}</h2>
                         <ul style="margin: 0 auto;">
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${new Date(due_date).toLocaleDateString()}</li>
