@@ -99,12 +99,12 @@ exports.updateReferral = (req, res, next) => {
   const id = req.params.id;
   let name = req.body.name;
   let last_name = req.body.last_name;
-  const address = {
-    address: req.body.address.address,
-    apt: req.body.address.apt,
-    city: req.body.address.city,
-    zipcode: req.body.address.zipcode
-  };
+
+  let address = req.body.address;
+  let apt = req.body.apt;
+  let city = req.body.city;
+  let zipcode = req.body.zipcode;
+
   const email = req.body.email;
   const phone = req.body.phone;
   const referralBy = req.body.referralBy;
@@ -126,6 +126,9 @@ exports.updateReferral = (req, res, next) => {
       name: name,
       last_name: last_name,
       address: address,
+      apt: apt,
+      city: city,
+      zipcode: zipcode,
       email: email,
       phone: phone,
       comment: comment,
@@ -190,9 +193,10 @@ exports.updateReferral = (req, res, next) => {
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${new Date(due_date).toLocaleDateString()}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${new Date(order_date).toLocaleDateString()}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Address: ${address.address}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Apt: ${address.apt}</li>
-                            <li style="text-decoration: none; text-transform: capitalize; list-style: none;padding: 0.8rem;margin: 0 auto;">City: ${address.city}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Address: ${address}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Package: ${package}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;text-transform: uppercase;">Apt: ${apt}</li>
+                            <li style="text-decoration: none; text-transform: capitalize; list-style: none;padding: 0.8rem;margin: 0 auto;">City: ${city}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Phone: ${phone}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Email: ${email}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Move In: ${moveIn}</li>
@@ -241,12 +245,10 @@ exports.deleteReferral = (req, res, next) => {
 exports.addReferral = (req, res, next) => {
   const name = req.body.name;
   const last_name = req.body.last_name;
-  const address = {
-    address: req.body.address.address,
-    apt: req.body.address.apt,
-    city: req.body.address.city,
-    zipcode: req.body.address.zipcode
-  };
+  let address = req.body.address;
+  let apt = req.body.apt;
+  let city = req.body.city;
+  let zipcode = req.body.zipcode;
   const email = req.body.email;
   const phone = req.body.phone;
   const referralBy = req.body.referralBy;
@@ -269,6 +271,9 @@ exports.addReferral = (req, res, next) => {
     name: name,
     last_name: last_name,
     address: address,
+    apt: apt,
+    city: city,
+    zipcode: zipcode,
     email: email,
     phone: phone,
     comment: comment,
@@ -307,14 +312,7 @@ exports.getAllReferralsById = (req, res) => {
     .then(referrals => {
 
       res.json(referrals);
-      // console.log('Result;', referrals);
-      // const title = 'My Referrals';
-      // const path = 'personal referrals'
-      // res.render('referrals/personal-referral', {
-      //   referrals: referrals,
-      //   title: title,
-      //   path: path
-      // });
+
     })
     .catch(err => console.log(err));
 }

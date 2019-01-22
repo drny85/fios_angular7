@@ -53,13 +53,20 @@ const userSchema = new Schema({
     },
     vendor: {
         type: String
+
     },
     coach: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+
     },
     title: {
         type: String
+    },
+
+    profileCompleted: {
+        type: Boolean,
+        default: false
     }
 
 

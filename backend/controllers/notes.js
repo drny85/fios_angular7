@@ -7,8 +7,8 @@ exports.addNote = (req, res, next) => {
     const note = req.body.note;
     const created = req.body.created
 
-    if (String(note).length === 0) {
-        return res.status(400).send('Note is required')
+    if (note.length === 0) {
+        return res.status(400).json(new Error('Note is required'))
     }
 
     const newNote = new Note({
@@ -40,7 +40,9 @@ exports.getNote = (req, res, next) => {
 }
 // get all notes
 exports.getNotes = (req, res, next) => {
-    Note.find()
+    Note.find({
+            author: req.user._id
+        })
         .then(notes => {
             res.json(notes)
         })
@@ -81,7 +83,9 @@ exports.getTodayNotes = (req, res, next) => {
             created: {
                 $gte: start,
                 $lt: end
-            }
+            },
+            author: req.user._id
+
         })
         .sort('-created')
         .exec()

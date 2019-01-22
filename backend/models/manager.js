@@ -23,6 +23,10 @@ const managerSchema = new Schema({
     phone: {
         type: String,
         required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 
 });

@@ -14,16 +14,32 @@ const _ = require('lodash');
 
 
 exports.getManagers = (req, res, next) => {
+    if (req.user.roles.isAdmin) {
+        Manager.find()
+            .then(managers => {
+                res.json({
+                    managers
+                });
 
-    Manager.find()
-        .then(managers => {
-            res.json({
-                managers
-            });
+            })
+            .catch(err => console.log(err));
+    } else if (req.user.roles.active && !req.user.roles.isAdmin) {
+        Manager.find({
+                userId: req.user._id
+            })
+            .then(managers => {
+                res.json({
+                    managers
+                });
 
-        })
-        .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+    }
 }
+
+
+
+
 
 //post Referee or referee
 exports.postManager = (req, res, next) => {
@@ -31,6 +47,7 @@ exports.postManager = (req, res, next) => {
     const last_name = req.body.last_name;
     const phone = req.body.phone;
     const email = req.body.email;
+    const userId = req.user._id;
 
 
 
@@ -50,7 +67,8 @@ exports.postManager = (req, res, next) => {
                     name: name,
                     last_name: last_name,
                     phone: phone,
-                    email: email
+                    email: email,
+                    userId: userId
 
                 })
                 manager.save()

@@ -46,9 +46,9 @@ router.post('/login', [
 
 router.get('/coaches', auth, userController.getCoaches);
 
-router.get('/all', auth, admin, userController.getAllUsers);
+router.get('/all', auth, userController.getAllUsers);
 // PUT Update user
-router.put('/update', auth, admin, userController.updateUser);
+router.put('/update', auth, userController.updateUser);
 // GET user 
 router.get('/me', auth, userController.getUser);
 // GET user by ID

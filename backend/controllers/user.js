@@ -134,8 +134,16 @@ exports.getAllUsers = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const id = req.body._id;
     const user = req.body;
+    let profileCompleted = false;
+    if (user.coach && user.vendor) {
+        profileCompleted = true;
+    }
 
-    User.findByIdAndUpdate(id, user, {
+    User.findOneAndUpdate({
+            _id: id
+        }, { ...user,
+            profileCompleted
+        }, {
             new: true
         })
         .populate('coach', 'name last_name email')

@@ -15,7 +15,10 @@ const referralSchema = new Schema({
         required: true,
         lowercase: true
     },
-    address: Object,
+    address: String,
+    apt: String,
+    city: String,
+    zipcode: Number,
     phone: {
         type: String,
         required: true
