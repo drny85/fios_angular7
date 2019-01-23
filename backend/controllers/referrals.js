@@ -388,12 +388,7 @@ exports.getReferralsStatus = (req, res) => {
       .then(referrals => {
         referrals = [...referrals];
         res.json(referrals);
-        // res.render('referrals/my-referrals', {
-        //   referrals: referrals,
-        //   title: title,
-        //   path: path,
-        //   status: statusRequested
-        // });
+
       })
       .catch(err => console.log(err));
 
