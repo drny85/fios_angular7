@@ -3,17 +3,26 @@ const Referral = require('../models/referral');
 const Referee = require('../models/referee');
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
+const transport = require('nodemailer-sendgrid-transport');
 
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PSW
+const transporter = nodemailer.createTransport(transport({
+  auth: {
+    api_key: process.env.SENDGRID_API_KEY
 
   }
-});
+}));
+
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+
+//     user: process.env.EMAIL,
+//     pass: process.env.EMAIL_PSW
+
+//   }
+// });
 
 exports.getReferrals = (req, res, next) => {
   if (req.user.roles.isAdmin && req.user.roles.active) {
@@ -164,7 +173,7 @@ exports.updateReferral = (req, res, next) => {
         name = name.toUpperCase();
         last_name = last_name.toUpperCase()
         from = req.user.email;
-        let to = [referral.manager.email, 'drny85@icloud.com'];
+        let to = [referral.manager.email];
         let cc = [referral.coach.email, req.user.email];
 
         return transporter.sendMail({
