@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport(transport({
 
 exports.getReferrals = (req, res, next) => {
   if (req.user.roles.isAdmin && req.user.roles.active) {
+    console.log('Admin');
 
     Referral.find()
       .populate('referralBy', 'name last_name')
@@ -40,7 +41,8 @@ exports.getReferrals = (req, res, next) => {
       })
       .catch(err => console.log(err));
 
-  } else if (req.user.roles.coach) {
+  } else if (req.user.roles.coach && req.user.roles.active) {
+    console.log('coach');
     Referral.find({
         coach: {
           _id: req.user._id
@@ -59,6 +61,7 @@ exports.getReferrals = (req, res, next) => {
       .catch(err => console.log(err));
 
   } else if (req.user.roles.active) {
+    console.log('user');
     Referral.find({
         userId: req.user._id
       })
@@ -69,6 +72,7 @@ exports.getReferrals = (req, res, next) => {
       .sort('moveIn')
       .exec()
       .then(referrals => {
+
         referrals = [...referrals];
         res.status(200).json(referrals);
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
@@ -263,9 +267,17 @@ exports.updateReferral = (req, res, next) => {
 //delete referral
 exports.deleteReferral = (req, res, next) => {
   const id = req.params.id;
-  Referral.findByIdAndDelete(id)
+  Referral.findOneAndRemove({
+      _id: id,
+      userId: req.user._id
+    })
     .populate('referralBy', 'name last_name')
-    .then(() => {
+    .then((ref) => {
+      if (!ref) return res.status(401).json({
+        message: 'Can not delete this referral'
+      });
+
+
       res.json({
         message: 'Referral Deleted!'
       });
