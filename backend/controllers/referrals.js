@@ -40,6 +40,24 @@ exports.getReferrals = (req, res, next) => {
       })
       .catch(err => console.log(err));
 
+  } else if (req.user.roles.coach) {
+    Referral.find({
+        coach: {
+          _id: req.user._id
+        }
+      })
+      .populate('referralBy', 'name last_name')
+      .populate('manager', 'email name last_name')
+      .populate('updatedBy', 'name last_name')
+      .sort('moveIn')
+      .exec()
+      .then(referrals => {
+        referrals = [...referrals];
+        res.status(200).json(referrals);
+        // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
+      })
+      .catch(err => console.log(err));
+
   } else if (req.user.roles.active) {
     Referral.find({
         userId: req.user._id
@@ -273,7 +291,7 @@ exports.addReferral = (req, res, next) => {
   let userId;
   if (req.body.userId) {
     userId = req.body.userId;
-    coach = req.body.coach;
+    coach = req.user._id;
   } else {
     userId = req.user._id;
     coach = req.user.coach._id;

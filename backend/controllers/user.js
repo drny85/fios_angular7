@@ -120,29 +120,46 @@ exports.getUserById = (req, res, next) => {
 
 
 exports.getAllUsers = (req, res, next) => {
-    User.find()
-        .select('-password')
-        .populate('coach', 'name last_name email')
-        .exec()
-        .then(users => {
-            res.json(users);
-        }).catch(err => {
-            console.log(err);
-        })
+    if (req.user.roles.isAdmin) {
+        User.find()
+            .select('-password')
+            .populate('coach', 'name last_name email')
+            .exec()
+            .then(users => {
+                res.json(users);
+            }).catch(err => {
+                console.log(err);
+            })
+    } else if (req.user.roles.coach) {
+        User.find({
+                coach: {
+                    _id: req.user._id
+                }
+            })
+            .select('-password')
+            .populate('coach', 'name last_name email')
+            .exec()
+            .then(users => {
+                res.json(users);
+            }).catch(err => {
+                console.log(err);
+            })
+    }
+
 }
 
 exports.updateUser = (req, res, next) => {
     const id = req.body._id;
     const user = req.body;
-    let profileCompleted = false;
-    if (user.coach && user.vendor) {
-        profileCompleted = true;
-    }
+    // let profileCompleted = false;
+    // if (user.coach && user.vendor) {
+    //     profileCompleted = true;
+    // }
 
     User.findOneAndUpdate({
             _id: id
-        }, { ...user,
-            profileCompleted
+        }, { ...user
+
         }, {
             new: true
         })

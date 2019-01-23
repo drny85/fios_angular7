@@ -14,7 +14,7 @@ const _ = require('lodash');
 
 
 exports.getManagers = (req, res, next) => {
-    if (req.user.roles.isAdmin) {
+    if (req.user.roles.isAdmin || req.user.roles.coach) {
         Manager.find()
             .then(managers => {
                 res.json({

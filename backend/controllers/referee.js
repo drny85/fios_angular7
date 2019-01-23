@@ -27,7 +27,7 @@ exports.getAddReferee = (req, res, next) => {
 
 
 exports.getReferees = (req, res, next) => {
-  if (req.user.roles.caoch || req.user.roles.isAdmin) {
+  if (req.user.roles.coach || req.user.roles.isAdmin) {
 
     Referee.find()
       .then(referees => {
