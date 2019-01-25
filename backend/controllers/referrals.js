@@ -2,6 +2,8 @@
 const Referral = require('../models/referral');
 const Referee = require('../models/referee');
 const nodemailer = require('nodemailer');
+const moment = require('moment');
+moment().format();
 
 const transport = require('nodemailer-sendgrid-transport');
 
@@ -92,8 +94,7 @@ exports.getReferral = (req, res, next) => {
     .populate('coach', 'name last_name email')
     .exec()
     .then(referral => {
-      let title = "Details";
-      let path = 'details';
+
       return res.status(200).json(referral);
       // res.render('referrals/referral-detail', { referral: referral, title: title, path: path});
     }).catch(err => console.log(err));
@@ -143,18 +144,20 @@ exports.updateReferral = (req, res, next) => {
 
   const email = req.body.email;
   const phone = req.body.phone;
-  const referralBy = req.body.referralBy;
+  let referralBy = req.body.referralBy;
   const comment = req.body.comment;
   const status = req.body.status;
-  const moveIn = req.body.moveIn;
+  let moveIn = req.body.moveIn;
   const mon = req.body.mon;
-  const due_date = req.body.due_date;
-  const order_date = req.body.order_date;
+  let due_date = req.body.due_date;
+  let order_date = req.body.order_date;
   const package = req.body.package;
   const manager = req.body.manager;
   const coach = req.body.coach;
   const updated = req.body.updated;
   let referee;
+
+
 
   Referral.findOneAndUpdate({
       _id: id
@@ -170,11 +173,11 @@ exports.updateReferral = (req, res, next) => {
       comment: comment,
       referralBy: referralBy,
       status: status,
-      due_date: due_date,
-      order_date: order_date,
+      due_date: moment(due_date).format("L"),
+      order_date: moment(order_date).format("L"),
       package: package,
       mon: mon,
-      moveIn: moveIn,
+      moveIn: moment(moveIn).format("L"),
       manager: manager,
       coach: coach,
       updated: updated,
@@ -193,7 +196,10 @@ exports.updateReferral = (req, res, next) => {
       res.json(referral);
       if (status.toLowerCase() === 'closed') {
         name = name.toUpperCase();
-        last_name = last_name.toUpperCase()
+        due_date = moment(due_date).format("L");
+        moveIn = moment(moveIn).format("L");
+        order_date = moment(order_date).format("L");
+        last_name = last_name.toUpperCase();
         from = req.user.email;
         let to = [referral.manager.email];
         let cc = [referral.coach.email, req.user.email];
@@ -202,7 +208,7 @@ exports.updateReferral = (req, res, next) => {
           to: to,
           from: from,
           cc: cc,
-          subject: `Referral Closed Notification!`,
+          subject: `Referral/Sale Closed Notification!`,
           html: `
         <!DOCTYPE html>
         <html lang="en">
@@ -227,8 +233,8 @@ exports.updateReferral = (req, res, next) => {
                         <h2 class="center pd" style="text-align: center;padding: 10px; text-transform: capitalize;">${name} ${last_name}</h2>
                         <ul style="margin: 0 auto;">
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem; text-transform: uppercase; margin: 0 auto;font-weight: bolder;">MON: ${mon}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${new Date(due_date).toLocaleDateString()}</li>
-                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${new Date(order_date).toLocaleDateString()}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Due Date: ${due_date}</li>
+                            <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;">Date Placed: ${order_date}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Address: ${address}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto; text-transform: capitalize;">Package: ${package}</li>
                             <li style="text-decoration: none;list-style: none;padding: 0.8rem;margin: 0 auto;text-transform: uppercase;">Apt: ${apt}</li>
@@ -295,10 +301,11 @@ exports.addReferral = (req, res, next) => {
   let zipcode = req.body.zipcode;
   const email = req.body.email;
   const phone = req.body.phone;
-  const referralBy = req.body.referralBy;
+  let referralBy = req.body.referralBy;
   const comment = req.body.comment;
   const status = req.body.status;
   const moveIn = req.body.moveIn;
+
   let coach;
   let userId;
   if (req.body.userId) {
@@ -308,6 +315,9 @@ exports.addReferral = (req, res, next) => {
     userId = req.user._id;
     coach = req.user.coach._id;
   }
+
+
+
 
   const manager = req.body.manager;
 
