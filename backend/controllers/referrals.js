@@ -28,7 +28,6 @@ const transporter = nodemailer.createTransport(transport({
 
 exports.getReferrals = (req, res, next) => {
   if (req.user.roles.isAdmin && req.user.roles.active) {
-    console.log('Admin');
 
     Referral.find()
       .populate('referralBy', 'name last_name')
@@ -44,7 +43,7 @@ exports.getReferrals = (req, res, next) => {
       .catch(err => console.log(err));
 
   } else if (req.user.roles.coach && req.user.roles.active) {
-    console.log('coach');
+
     Referral.find({
         coach: {
           _id: req.user._id
@@ -63,7 +62,7 @@ exports.getReferrals = (req, res, next) => {
       .catch(err => console.log(err));
 
   } else if (req.user.roles.active) {
-    console.log('user');
+
     Referral.find({
         userId: req.user._id
       })

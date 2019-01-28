@@ -67,7 +67,8 @@ const userSchema = new Schema({
     profileCompleted: {
         type: Boolean,
         default: false
-    }
+    },
+    image: String
 
 
 });
