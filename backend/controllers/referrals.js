@@ -2,6 +2,7 @@
 const Referral = require('../models/referral');
 const Referee = require('../models/referee');
 const nodemailer = require('nodemailer');
+const User = require('../models/user');
 const moment = require('moment');
 moment().format();
 
@@ -307,50 +308,55 @@ exports.addReferral = (req, res, next) => {
 
   let coach;
   let userId;
-  if (req.body.userId) {
+  if (!req.body.userId) {
+    //the coach is submitting the referral.
     userId = req.body.userId;
     coach = req.user._id;
   } else {
-    userId = req.user._id;
-    coach = req.user.coach._id;
-  }
+    //logging using submitting the referral.
+    User.findOne({
+        _id: req.user._id
+      })
+      .then(u => {
+        if (!u) return res.status(404).json(new Error('No user found'));
+        userId = u._id;
+        coach = u.coach._id;
+        const manager = req.body.manager;
+
+        const referral = new Referral({
+          name: name,
+          last_name: last_name,
+          address: address,
+          apt: apt,
+          city: city,
+          zipcode: zipcode,
+          email: email,
+          phone: phone,
+          comment: comment,
+          referralBy: referralBy,
+          status: status,
+          moveIn: moveIn,
+          userId: userId,
+          coach: coach,
+          manager: manager
+
+        });
+        referral.save()
+          .then(result => {
+            res.json(result);
+            return Referee.findById(referralBy)
+          }).then(ref => {
+
+            ref.referrals.push(referral._id);
+            ref.save();
+          })
+      })
+      .catch(error => next(error));
 
 
+  };
 
-
-  const manager = req.body.manager;
-
-  const referral = new Referral({
-    name: name,
-    last_name: last_name,
-    address: address,
-    apt: apt,
-    city: city,
-    zipcode: zipcode,
-    email: email,
-    phone: phone,
-    comment: comment,
-    referralBy: referralBy,
-    status: status,
-    moveIn: moveIn,
-    userId: userId,
-    coach: coach,
-    manager: manager
-
-  });
-  referral.save()
-    .then(result => {
-      res.json(result);
-      return Referee.findById(referralBy)
-    }).then(ref => {
-
-      ref.referrals.push(referral._id);
-      ref.save();
-    })
-    .catch(err => console.log(err));
-
-
-};
+}
 
 
 exports.getAllReferralsById = (req, res) => {
@@ -369,6 +375,8 @@ exports.getAllReferralsById = (req, res) => {
     })
     .catch(err => console.log(err));
 }
+
+
 
 
 exports.getReferralsStatus = (req, res) => {
