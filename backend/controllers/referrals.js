@@ -318,6 +318,7 @@ exports.addReferral = (req, res, next) => {
         _id: req.user._id
       })
       .then(u => {
+        //if no user found.
         if (!u) return res.status(404).json(new Error('No user found'));
         userId = u._id;
         coach = u.coach._id;
