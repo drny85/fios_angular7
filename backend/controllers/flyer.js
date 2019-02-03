@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport(transport({
 exports.sendFlyer = (req, res, next) => {
 
     const email = req.body.email;
+    const referral = req.body.referral;
 
     let body = `
     <!DOCTYPE html>
@@ -155,11 +156,13 @@ exports.sendFlyer = (req, res, next) => {
     </head>
     
     <body style="margin: 0;padding: 0;box-sizing: border-box;">
-        <div class="container" style="width: 100%;position: relative;top: 2rem;margin: 0 auto;min-width: 700px;">
-            <div class="card profile_pic row" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 768px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 738px;width: 100%;position: relative;max-height: 400px;min-height: 400px;">
-                <div class="card-title col-6 fl" style="text-align: left;font-size: 1.5rem;margin-left: 1rem;position: relative;top: 0;left: 0;float: left;">
-                    <h3>Robert Melendez</h3>
-                    <p style="font-style: italic;padding: 12px;font-size: 20px !important;">Your building's dedicated Fios rep</p>
+        <div class="container" style="width: 100%;position: relative;top:0;margin: 0 auto;min-width: 700px;">
+            <div class="profile_pic row" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 1028px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 738px;width: 100%;position: relative;max-height: 400px;min-height: 400px;">
+                <div class="card-title col-6 fl" style="text-align: left;font-size: 1.5rem;margin-left:0;position: relative;top: 0;left: 0;float: left;">
+                    <h3 style="margin-left:10px;">Robert Melendez</h3>
+                    <p style="font-style: italic;padding: 12px;font-size: 20px !important; padding: 10px;">Hi ${referral.name.toUpperCase()}, my name is ${referral.userId.name.toUpperCase()} ${referral.userId.last_name.toUpperCase()} from Verizon Fios. I am your dedicated Fios specially at ${referral.address}.
+                    . I work with the office to make sure every tenant gets the best service possible for Internet, TV, and Phone.  Please let me know if you have any questions or need additional information on how to place your order and get your services installed asap.</p>
+                    <p style="font-style: italic;padding: 12px;font-size: 16px !important;></p>
                     <div class="card-btn" style="position: relative;margin: 0 auto;">
     
                         <!-- <a href="tel:646-574-0089" class="btn black mobile_only">Call me</a> -->
@@ -167,13 +170,13 @@ exports.sendFlyer = (req, res, next) => {
     
                     </div>
                 </div>
-                <div class="img_div col-6 fr" style="position: relative;top: 0;left: 0;float: right;">
-                    <img src="https://d1v58eqpqo0kww.cloudfront.net/A5F1EE1D37/image/1nPAbyDRxXw38r09nqJENZ6BmWvaeJOM_large.png" alt="image" style="width: 100%;max-height: 400px;padding: 0;position: relative;text-align: center;">
+                <div class="img_div col-6 fr" style="position: absolute;top: 0;left: 0; right: 0;float: right;">
+                    <img src="https://d1v58eqpqo0kww.cloudfront.net/A5F1EE1D37/image/1nPAbyDRxXw38r09nqJENZ6BmWvaeJOM_large.png" alt="image" style="min-width: 200px;max-height: 200px;padding: 0;position: relative;text-align: center;">
                 </div>
     
             </div>
-            <div class="card" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 768px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 568px;">'
-                <img class="logo_image" src="cid:flyer" alt="flyer" style="text-align: center;width: 100%;height: 100%;padding: 1rem;">
+            <div class="" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 1028px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 578px;">'
+                <img class="logo_image" src="cid:flyer" alt="flyer" style="text-align: center;width: 100%;height: 100%;padding: 0;">
     
             </div>
         </div>
@@ -186,18 +189,19 @@ exports.sendFlyer = (req, res, next) => {
             _id: req.user._id
         })
         .then(user => {
+            let n = user.name.toUpperCase();
+            let l = user.last_name.toUpperCase();
             if (user) {
                 return transporter.sendMail({
                     to: email,
-                    from: req.user.email,
+                    from: `${n} ${l} ` + req.user.email,
                     cc: req.user.email,
                     subject: 'Your Personal Verizon Fios Specialist',
-
 
                     html: body,
                     attachments: [{
                         filename: 'flyer.jpg',
-                        path: path.join(__dirname, '../public/images/flyer.jpg'),
+                        path: path.join(__dirname, '../public/images/netflix1.jpg'),
                         cid: 'flyer'
                     }],
                 }, (err, info) => {

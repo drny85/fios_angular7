@@ -92,6 +92,7 @@ exports.getReferral = (req, res, next) => {
     .populate('manager', 'email name last_name')
     .populate('updatedBy', 'name last_name')
     .populate('coach', 'name last_name email')
+    .populate('userId', 'name last_name email')
     .exec()
     .then(referral => {
 
@@ -177,7 +178,7 @@ exports.updateReferral = (req, res, next) => {
       order_date: order_date,
       package: package,
       mon: mon,
-      moveIn: moment(moveIn).format("L"),
+      moveIn: moveIn,
       manager: manager,
       coach: coach,
       updated: updated,
