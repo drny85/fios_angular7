@@ -158,7 +158,7 @@ exports.sendFlyer = (req, res, next) => {
     <body style="margin: 0;padding: 0;box-sizing: border-box;">
         <div class="container" style="width: 100%;position: relative;top:0;margin: 0 auto;min-width: 700px;">
             <div class="profile_pic row" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 1028px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 738px;width: 100%;position: relative;max-height: 400px;min-height: 400px;">
-                <div class="card-title col-6 fl" style="text-align: left;font-size: 1.5rem;margin-left:0;position: relative;top: 0;left: 0;float: left;">
+                <div class="card-title col-6 fl" style="text-align: left;font-size: 1.4rem;margin-left:0;position: relative;top: 0;left: 0;float: left;">
                     <h3 style="margin-left:10px;">Robert Melendez</h3>
                     <p style="font-style: italic;padding: 12px;font-size: 20px !important; padding: 10px;">Hi ${referral.name.toUpperCase()}, my name is ${referral.userId.name.toUpperCase()} ${referral.userId.last_name.toUpperCase()} from Verizon Fios. I am your dedicated Fios specially at ${referral.address}.
                     . I work with the office to make sure every tenant gets the best service possible for Internet, TV, and Phone.  Please let me know if you have any questions or need additional information on how to place your order and get your services installed asap.</p>
