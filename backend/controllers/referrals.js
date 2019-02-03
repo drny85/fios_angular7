@@ -157,6 +157,8 @@ exports.updateReferral = (req, res, next) => {
   const coach = req.body.coach;
   const updated = req.body.updated;
   let referee;
+  let email_sent = req.body.email_sent;
+
 
 
 
@@ -195,7 +197,7 @@ exports.updateReferral = (req, res, next) => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
 
       res.json(referral);
-      if (status.toLowerCase() === 'closed') {
+      if (status.toLowerCase() === 'closed' && !email_sent) {
         name = name.toUpperCase();
         due_date = moment(due_date).format("L");
         moveIn = moment(moveIn).format("L");
@@ -263,6 +265,17 @@ exports.updateReferral = (req, res, next) => {
         </html>
         `
 
+        }, (err, info) => {
+          if (!err) {
+            Referral.findOneAndUpdate({
+                _id: id
+              }, {
+                email_sent: true
+              }, {
+                new: true
+              })
+              .then(ref => res.json(ref))
+          }
         })
       }
     })

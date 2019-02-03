@@ -64,6 +64,10 @@ const referralSchema = new Schema({
     updated: {
         type: String
 
+    },
+    email_sent: {
+        type: Boolean,
+        default: false
     }
 
 });
