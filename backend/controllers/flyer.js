@@ -23,163 +23,18 @@ exports.sendFlyer = (req, res, next) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Flyer</title>
-        <style>
-            .card {
-    
-    
-                align-content: center;
-                align-items: center;
-                top: 0;
-                margin: 0 auto;
-                max-width: 768px;
-                border: 1px solid rgb(236, 226, 226);
-                border-radius: 5px;
-                min-width: 568px;
-            }
-    
-            .card-body {
-                z-index: 100;
-                width: 100%;
-                position: relative;
-    
-                margin: 0 auto;
-    
-    
-            }
-    
-    
-            .card-title {
-                text-align: left;
-                font-size: 1.5rem;
-                margin-left: 1rem;
-                position: relative;
-            }
-    
-            .card-title p {
-                font-style: italic;
-                font-size: 20px !important;
-                padding: 12px;
-            }
-    
-    
-            .btn {
-                border: none;
-                width: 10rem;
-                padding: 1rem 2rem 1rem 2rem;
-                border-radius: 30px;
-                margin: 1rem;
-    
-            }
-    
-            .card .logo_image {
-                width: 100%;
-                height: 100%;
-                padding: 1rem;
-            }
-    
-            .row {
-                width: 100%;
-                position: relative;
-                max-height: 400px;
-                min-height: 400px;
-                min-width: 738px;
-            }
-    
-            .col-6 {
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-    
-            .fl {
-                float: left;
-                position: relative;
-            }
-    
-            .fr {
-                float: right;
-                position: relative;
-            }
-    
-            .profile_pic img {
-                width: 100%;
-                max-height: 400px;
-                padding: 0;
-                position: relative;
-            }
-    
-            .card-btn a {
-                position: relative;
-                text-decoration: none;
-                text-align: center;
-    
-    
-            }
-    
-    
-            .card-btn a:hover {
-                background-color: rgb(109, 107, 103);
-    
-            }
-    
-            .black {
-                background-color: black;
-                color: whitesmoke;
-            }
-    
-            .container {
-                width: 100%;
-                position: relative;
-                top: 2rem;
-                margin: 0 auto;
-                min-width: 578px;
-            }
-    
-            .card-btn {
-                position: relative;
-                margin: 0 auto;
-    
-    
-            }
-    
-            .card img {
-                text-align: center;
-            }
-    
-            body {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-        </style>
+        <title>Your Fios Specialist</title>
+        
     </head>
     
-    <body style="margin: 0;padding: 0;box-sizing: border-box;">
-        <div class="container" style="width: 100%;position: relative;top:0;margin: 0 auto;min-width: 700px;">
-            <div class="profile_pic row" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 1028px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 738px;width: 100%;position: relative;max-height: 400px;min-height: 400px;">
-                <div class="card-title col-6 fl" style="text-align: left;font-size: 1.4rem;margin-left:0;position: relative;top: 0;left: 0;float: left;">
-                    <h3 style="margin-left:10px;">Robert Melendez</h3>
-                    <p style="font-style: italic;padding: 12px;font-size: 20px !important; padding: 10px;">Hi ${referral.name.toUpperCase()}, my name is ${referral.userId.name.toUpperCase()} ${referral.userId.last_name.toUpperCase()} from Verizon Fios. I am your dedicated Fios specially at ${referral.address}.
-                    . I work with the office to make sure every tenant gets the best service possible for Internet, TV, and Phone.  Please let me know if you have any questions or need additional information on how to place your order and get your services installed asap.</p>
-                    <p style="font-style: italic;padding: 12px;font-size: 16px !important;></p>
-                    <div class="card-btn" style="position: relative;margin: 0 auto;">
+    <body style="margin: 0;padding: 0;box-sizing: border-box;width: 100%;height: 100%;position: relative;">
+        <div class="container" style="box-sizing: border-box;padding: 10px;min-width: 100%;min-height: 100%;max-width: 100%;max-height: 100%;position: relative;">
+            <img src="cid:flyer" alt="flyer" style="width: 100%;height: 100%;">
     
-                        <!-- <a href="tel:646-574-0089" class="btn black mobile_only">Call me</a> -->
-                        <a href="mailto:robert.melendez@drascosales.com" class="btn black desktop_only" style="border: none;width: 10rem;padding: 1rem 2rem 1rem 2rem;border-radius: 30px;margin: 1rem;background-color: black;color: whitesmoke;position: relative;text-decoration: none;text-align: center;">Email me</a>
+            
     
-                    </div>
-                </div>
-                <div class="img_div col-6 fr" style="position: absolute;top: 0;left: 0; right: 0;float: right;">
-                    <img src="https://d1v58eqpqo0kww.cloudfront.net/A5F1EE1D37/image/1nPAbyDRxXw38r09nqJENZ6BmWvaeJOM_large.png" alt="image" style="min-width: 200px;max-height: 200px;padding: 0;position: relative;text-align: center;">
-                </div>
-    
-            </div>
-            <div class="" style="align-content: center;align-items: center;top: 0;margin: 0 auto;max-width: 1028px;border: 1px solid rgb(236, 226, 226);border-radius: 5px;min-width: 578px;">'
-                <img class="logo_image" src="cid:flyer" alt="flyer" style="text-align: center;width: 100%;height: 100%;padding: 0;">
-    
-            </div>
         </div>
+    
     
     </body>
     
@@ -200,8 +55,8 @@ exports.sendFlyer = (req, res, next) => {
 
                     html: body,
                     attachments: [{
-                        filename: 'flyer.jpg',
-                        path: path.join(__dirname, '../public/images/netflix1.jpg'),
+                        filename: 'netflix_promo.png',
+                        path: path.join(__dirname, '../public/images/netflix_promo.png'),
                         cid: 'flyer'
                     }],
                 }, (err, info) => {
