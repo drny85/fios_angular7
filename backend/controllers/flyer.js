@@ -140,7 +140,7 @@ exports.sendFlyer = (req, res, next) => {
                     </html>`,
                     attachments: [{
                         filename: 'netflix_promo.png',
-                        path: path.join(__dirname, '../public/images/netflix_promo.png'),
+                        path: path.join(__dirname, '../public/images/flyer.jpg'),
                         cid: 'flyer'
                     }],
                 }, (err, info) => {
