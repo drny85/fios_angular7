@@ -17,9 +17,9 @@ exports.getManagers = (req, res, next) => {
     if (req.user.roles.isAdmin || req.user.roles.coach) {
         Manager.find()
             .then(managers => {
-                res.json({
+                res.json(
                     managers
-                });
+                );
 
             })
             .catch(err => console.log(err));
@@ -28,9 +28,9 @@ exports.getManagers = (req, res, next) => {
                 userId: req.user._id
             })
             .then(managers => {
-                res.json({
+                res.json(
                     managers
-                });
+                );
 
             })
             .catch(err => console.log(err));
@@ -89,9 +89,9 @@ exports.getOneManager = (req, res, next) => {
         })
         .then(manager => {
 
-            res.json({
+            res.json(
                 manager
-            });
+            );
 
         })
         .catch(err => console.log(err));
@@ -117,13 +117,14 @@ exports.postUpdateManager = (req, res) => {
 
 }
 
-exports.deleteManager = (req, res) => {
+exports.deleteManager = (req, res, next) => {
     const id = req.params.id;
     Manager.findOneAndDelete({
             _id: id
         })
-        .then(res => {
-            res.json(res);
+        .then(r => {
+            res.json(r);
         })
+        .catch(err => next(err))
 
 }
