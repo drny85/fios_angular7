@@ -151,15 +151,22 @@ exports.sendFlyer = (req, res, next) => {
                     console.log(err);
                     if (info) {
                     
-                        res.status(200).json({
-                            message: 'Email Sent.'
-                        });
-                        
                       return Referral.findOneAndUpdate({_id: referral._id}, {
-                            collateral_sent: true
-                        })
+                            collateral_sent: true,
+                            collateral_sent_on: new Date()
+                        }, {new: true})
+                        .populate('referralBy', 'name last_name _id')
+                        .populate('manager', 'email name last_name')
+                        .populate('updatedBy', 'name last_name')
+                        .populate('coach', 'name last_name email')
+                        .populate('userId', 'name last_name email')
+                        .exec()
                         .then(ref => {
                             //updated to true
+                            res.status(200).json({
+                                message: 'Email Sent.',
+                                referral: ref
+                            });
                         })
                 
 

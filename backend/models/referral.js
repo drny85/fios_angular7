@@ -72,6 +72,9 @@ const referralSchema = new Schema({
     collateral_sent: {
         type: Boolean,
         default: false
+    },
+    collateral_sent_on: {
+        type: Date
     }
 
 });
