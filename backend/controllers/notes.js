@@ -51,13 +51,14 @@ exports.getNotes = (req, res, next) => {
 
 
 exports.getNotesByDate = (req, res, next) => {
-    const day = req.params.date;
-    console.log(day);
-    // start today
-    let start = moment(day).startOf('day');
+    const today = new Date().toLocaleDateString();
+    const startDay = req.body.start;
+    const endDay = req.body.end;
+   
+    let start = moment(startDay).startOf('day');
     // end today
 
-    let end = moment(day).endOf('day');
+    let end = moment(endDay).endOf('day');
 
     Note.find({
             created: {

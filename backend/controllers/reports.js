@@ -29,8 +29,10 @@ exports.sendNithlyReport = (req, res, next) => {
 
     const notes = req.body.notes;
     const referrals = req.body.referrals;
+    const extra_email = req.body.extra_email;
     let emailsTo = [];
     let emailsCC = [req.user.email];
+    console.log(req.body)
 
 
     let notesList = '';
@@ -58,6 +60,10 @@ exports.sendNithlyReport = (req, res, next) => {
         if (!emailsCC.includes(ref.manager.email))
             emailsCC.push(ref.manager.email);
     });
+
+    if(referrals.length === 0) {
+        emailsCC.push(extra_email);
+    }
 
     //HTML EMAIL BODY
     User.findOne({

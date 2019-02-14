@@ -10,7 +10,7 @@ const noteController = require('../controllers/notes');
 // add new note route
 router.post('/new_note', auth, noteController.addNote);
 
-router.get('/date/:date', auth, noteController.getNotesByDate);
+router.post('/dates', auth, noteController.getNotesByDate);
 
 // get today's notes.
 router.get('/today', auth, noteController.getTodayNotes);

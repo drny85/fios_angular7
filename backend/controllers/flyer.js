@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const transport = require('nodemailer-sendgrid-transport');
 const User = require('../models/user');
 const path = require('path');
+const Referral = require('../models/referral')
 
 const transporter = nodemailer.createTransport(transport({
     auth: {
@@ -128,7 +129,7 @@ exports.sendFlyer = (req, res, next) => {
                     
                     
                             </div>
-                            <img src="cid:flyer" alt="flyer" style="width: 100%;height: 100%;">
+                            <img src="cid:flyer" alt="flyer" style="width: auto;height: 100%;">
                     
                     
                     
@@ -146,9 +147,13 @@ exports.sendFlyer = (req, res, next) => {
                 }, (err, info) => {
                     console.log(err);
                     if (info) {
+                    
                         res.status(200).json({
                             message: 'Email Sent.'
                         });
+
+                        
+
                     } else {
                         res.status(404).json(new Error('Something went wrong'));
                     }
@@ -161,3 +166,4 @@ exports.sendFlyer = (req, res, next) => {
 
 
 }
+

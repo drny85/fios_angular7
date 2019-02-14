@@ -68,6 +68,10 @@ const referralSchema = new Schema({
     email_sent: {
         type: Boolean,
         default: false
+    },
+    collateral_sent: {
+        type: Boolean,
+        default: false
     }
 
 });
