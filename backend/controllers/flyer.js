@@ -22,7 +22,7 @@ exports.sendFlyer = (req, res, next) => {
         .then(user => {
             let n = user.name.toUpperCase();
             let l = user.last_name.toUpperCase();
-            if (user) {
+            if (user && !referral.collateral_sent) {
                 return transporter.sendMail({
                     to: email,
                     from: `${n} ${l} ` + req.user.email,
@@ -112,7 +112,7 @@ exports.sendFlyer = (req, res, next) => {
                     
                     <body style="margin: 0;padding: 0;box-sizing: border-box;width: 100%;height: 100%;position: relative;">
                         <div class="container" style="box-sizing: border-box;padding: 10px;min-width: 100%;min-height: 100%;max-width: 100%;max-height: 100%;position: relative;">
-                            <div class="text" style="min-width: 100%;min-height: 20vh;position: relative;">
+                            <div class="text" style="min-width: 100%;min-height: 20vh;position: relative;display:block; width:100%;">
                                 <h4 style="text-align: center;font-size: 1.8rem;padding-top: 1rem;font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;">Congratulation on your move <span class="name" style="text-transform: capitalize;">${referral.name}</span> </h4>
                                 <p style="text-align: left;line-height: 1.5;font-size: 1.2rem;padding: 1rem;text-indent: 1.5rem;font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;">My name is <span class="name" style="text-transform: capitalize;">${user.name }</span> from Verizon Fios. I am your dedicated Fios Specialist.
                                     My goal is to
@@ -129,7 +129,10 @@ exports.sendFlyer = (req, res, next) => {
                     
                     
                             </div>
-                            <img src="cid:flyer" alt="flyer" style="width: auto;height: 100%;">
+                            <div style="width:100%;height: 100%; position:relative; margin-top:15px;">
+                            <img src="cid:flyer" alt="flyer" style="width: auto;height: 100%; margin:auto; display:block; text-align:center;">
+                            </div>
+                            
                     
                     
                     
@@ -151,8 +154,14 @@ exports.sendFlyer = (req, res, next) => {
                         res.status(200).json({
                             message: 'Email Sent.'
                         });
-
                         
+                      return Referral.findOneAndUpdate({_id: referral._id}, {
+                            collateral_sent: true
+                        })
+                        .then(ref => {
+                            //updated to true
+                        })
+                
 
                     } else {
                         res.status(404).json(new Error('Something went wrong'));
