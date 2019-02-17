@@ -3,8 +3,8 @@ const Referral = require('../models/referral');
 const Referee = require('../models/referee');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
-const moment = require('moment');
-moment().format();
+var moment = require('moment-timezone');
+moment().tz("America/New_York").format();
 
 const transport = require('nodemailer-sendgrid-transport');
 
@@ -450,6 +450,7 @@ exports.getReferraslByDate = (req, res, next) => {
 
   let end = moment(endDay).endOf('day');
   console.log(start, end);
+  
 
   Referral.find({
           order_date: {
@@ -459,7 +460,6 @@ exports.getReferraslByDate = (req, res, next) => {
          userId: req.user._id
       })
       .then(referrals => {
-        console.log(referrals)
           res.json(referrals);
       })
       .catch(err => next(err));
