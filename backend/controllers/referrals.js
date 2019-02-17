@@ -449,8 +449,7 @@ exports.getReferraslByDate = (req, res, next) => {
   // end today
 
   let end = moment(endDay).endOf('day');
-  console.log(start, end);
-  
+ 
 
   Referral.find({
           order_date: {
