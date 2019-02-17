@@ -15,7 +15,7 @@ router.post('/dates', auth, noteController.getNotesByDate);
 // get today's notes.
 router.get('/today', auth, noteController.getTodayNotes);
 //delete a note
-router.delete('/delete/:id', noteController.deleteNote);
+router.delete('/delete/:id', auth, noteController.deleteNote);
 
 router.get('/:id', auth, noteController.getNote);
 

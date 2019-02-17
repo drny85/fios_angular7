@@ -439,3 +439,28 @@ exports.getReferralsStatus = (req, res) => {
 
   }
 }
+
+exports.getReferraslByDate = (req, res, next) => {
+  const today = new Date().toLocaleDateString();
+  const startDay = req.body.start;
+  const endDay = req.body.end;
+ 
+  let start = moment(startDay).startOf('day');
+  // end today
+
+  let end = moment(endDay).endOf('day');
+  console.log(start, end);
+
+  Referral.find({
+          order_date: {
+              $gte: start,
+              $lt: end
+          },
+         userId: req.user._id
+      })
+      .then(referrals => {
+        console.log(referrals)
+          res.json(referrals);
+      })
+      .catch(err => next(err));
+}

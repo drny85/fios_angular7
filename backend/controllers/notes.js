@@ -64,7 +64,8 @@ exports.getNotesByDate = (req, res, next) => {
             created: {
                 $gte: start,
                 $lt: end
-            }
+            },
+            author: req.user._id
         })
         .then(notes => {
             res.json(notes)
@@ -100,9 +101,10 @@ exports.getTodayNotes = (req, res, next) => {
 exports.deleteNote = (req, res, next) => {
     const id = req.params.id;
     if (id) {
-        Note.findByIdAndRemove(id)
-            .then(notes => {
-                res.json(notes);
+    
+        Note.findOneAndDelete({_id: id})
+            .then((err, notes) => {
+                res.json({message: 'note deleted'});
             })
             .catch(err => next(err));
     }
