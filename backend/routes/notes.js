@@ -1,23 +1,25 @@
 //jshint esversion:6
 
-const express = require('express');
+const express = require( 'express' );
 
 const router = express.Router();
-const auth = require('../middlewares/auth');
+const auth = require( '../middlewares/auth' );
 
-const noteController = require('../controllers/notes');
+const noteController = require( '../controllers/notes' );
 
 // add new note route
-router.post('/new_note', auth, noteController.addNote);
+router.post( '/new_note', auth, noteController.addNote );
 
-router.post('/dates', auth, noteController.getNotesByDate);
+router.post( '/dates', auth, noteController.getNotesByDate );
+
+router.get( '/', auth, noteController.getNotes );
 
 // get today's notes.
-router.get('/today', auth, noteController.getTodayNotes);
+router.get( '/today', auth, noteController.getTodayNotes );
 //delete a note
-router.delete('/delete/:id', auth, noteController.deleteNote);
+router.delete( '/delete/:id', auth, noteController.deleteNote );
 
-router.get('/:id', auth, noteController.getNote);
+router.get( '/:id', auth, noteController.getNote );
 
 
 

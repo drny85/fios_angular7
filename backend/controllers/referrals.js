@@ -1,19 +1,19 @@
 //jshint esversion:6
-const Referral = require('../models/referral');
-const Referee = require('../models/referee');
-const nodemailer = require('nodemailer');
-const User = require('../models/user');
-var moment = require('moment-timezone');
-moment().tz("America/New_York").format();
+const Referral = require( '../models/referral' );
+const Referee = require( '../models/referee' );
+const nodemailer = require( 'nodemailer' );
+const User = require( '../models/user' );
+var moment = require( 'moment-timezone' );
+moment().tz( "America/New_York" ).format();
 
-const transport = require('nodemailer-sendgrid-transport');
+const transport = require( 'nodemailer-sendgrid-transport' );
 
-const transporter = nodemailer.createTransport(transport({
+const transporter = nodemailer.createTransport( transport( {
   auth: {
     api_key: process.env.SENDGRID_API_KEY
 
   }
-}));
+} ) );
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -27,112 +27,112 @@ const transporter = nodemailer.createTransport(transport({
 //   }
 // });
 
-exports.getReferrals = (req, res, next) => {
-  if (req.user.roles.isAdmin && req.user.roles.active) {
+exports.getReferrals = ( req, res, next ) => {
+  if ( req.user.roles.isAdmin && req.user.roles.active ) {
 
     Referral.find()
-      .populate('referralBy', 'name last_name')
-      .populate('manager', 'email name last_name')
-      .populate('updatedBy', 'name last_name')
-      .sort('moveIn')
+      .populate( 'referralBy', 'name last_name' )
+      .populate( 'manager', 'email name last_name' )
+      .populate( 'updatedBy', 'name last_name' )
+      .sort( 'moveIn' )
       .exec()
-      .then(referrals => {
-        referrals = [...referrals];
-        res.status(200).json(referrals);
+      .then( referrals => {
+        referrals = [ ...referrals ];
+        res.status( 200 ).json( referrals );
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
-      })
-      .catch(err => console.log(err));
+      } )
+      .catch( err => console.log( err ) );
 
-  } else if (req.user.roles.coach && req.user.roles.active) {
+  } else if ( req.user.roles.coach && req.user.roles.active ) {
 
-    Referral.find({
+    Referral.find( {
         coach: {
           _id: req.user._id
         }
-      })
-      .populate('referralBy', 'name last_name')
-      .populate('manager', 'email name last_name')
-      .populate('updatedBy', 'name last_name')
-      .sort('moveIn')
+      } )
+      .populate( 'referralBy', 'name last_name' )
+      .populate( 'manager', 'email name last_name' )
+      .populate( 'updatedBy', 'name last_name' )
+      .sort( 'moveIn' )
       .exec()
-      .then(referrals => {
-        referrals = [...referrals];
-        res.status(200).json(referrals);
+      .then( referrals => {
+        referrals = [ ...referrals ];
+        res.status( 200 ).json( referrals );
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
-      })
-      .catch(err => console.log(err));
+      } )
+      .catch( err => console.log( err ) );
 
-  } else if (req.user.roles.active) {
+  } else if ( req.user.roles.active ) {
 
-    Referral.find({
+    Referral.find( {
         userId: req.user._id
-      })
-      .populate('referralBy', 'name last_name')
-      .populate('manager', 'email name last_name')
-      .populate('updatedBy', 'name last_name')
-      .populate('coach', 'name last_name email')
-      .sort('moveIn')
+      } )
+      .populate( 'referralBy' )
+      .populate( 'manager' )
+      .populate( 'updatedBy' )
+      .populate( 'coach', 'name last_name email' )
+      .sort( 'moveIn' )
       .exec()
-      .then(referrals => {
+      .then( referrals => {
 
-        referrals = [...referrals];
-        res.status(200).json(referrals);
+        referrals = [ ...referrals ];
+        res.status( 200 ).json( referrals );
         // res.render('referrals/referrals', { title: title, referrals: referrals, path: path});
-      })
-      .catch(err => console.log(err));
+      } )
+      .catch( err => console.log( err ) );
   }
 
 
 };
 
-exports.getReferral = (req, res, next) => {
+exports.getReferral = ( req, res, next ) => {
   const id = req.params.id;
-  Referral.findById(id)
-    .populate('referralBy', 'name last_name _id')
-    .populate('manager', 'email name last_name')
-    .populate('updatedBy', 'name last_name')
-    .populate('coach', 'name last_name email')
-    .populate('userId', 'name last_name email')
+  Referral.findById( id )
+    .populate( 'referralBy', 'name last_name _id' )
+    .populate( 'manager', 'email name last_name' )
+    .populate( 'updatedBy', 'name last_name' )
+    .populate( 'coach', 'name last_name email' )
+    .populate( 'userId', 'name last_name email' )
     .exec()
-    .then(referral => {
+    .then( referral => {
 
-      return res.status(200).json(referral);
+      return res.status( 200 ).json( referral );
       // res.render('referrals/referral-detail', { referral: referral, title: title, path: path});
-    }).catch(err => console.log(err));
+    } ).catch( err => console.log( err ) );
 };
 
 //add a referral page
-exports.getAddReferral = (req, res, next) => {
+exports.getAddReferral = ( req, res, next ) => {
   let title = 'Adding referral';
   let path = 'add-referral';
   let refereesArray = [];
   Referee.find()
-    .then(referees => {
-      refereesArray = [...referees];
-      res.render('referrals/add-referral', {
+    .then( referees => {
+      refereesArray = [ ...referees ];
+      res.render( 'referrals/add-referral', {
         title: title,
         path: path,
         referees: refereesArray
-      });
-    })
+      } );
+    } )
 
 };
 
 // editing a referral 
-exports.editReferral = (req, res, next) => {
+exports.editReferral = ( req, res, next ) => {
   const id = req.params.id;
-  Referral.findOne({
+  Referral.findOne( {
       _id: id
-    })
-    .then(referral => {
-      return res.json(referral);
+    } )
+    .then( referral => {
+      return res.json( referral );
 
-    })
-    .catch(err => console.log(err));
+    } )
+    .catch( err => console.log( err ) );
 };
 
 //update referral
-exports.updateReferral = (req, res, next) => {
+exports.updateReferral = ( req, res, next ) => {
 
   const id = req.params.id;
   let name = req.body.name;
@@ -162,7 +162,7 @@ exports.updateReferral = (req, res, next) => {
 
 
 
-  Referral.findOneAndUpdate({
+  Referral.findOneAndUpdate( {
       _id: id
     }, {
       name: name,
@@ -187,27 +187,27 @@ exports.updateReferral = (req, res, next) => {
       updatedBy: req.user._id
     }, {
       new: true
-    })
-    .populate('referralBy', 'name last_name')
-    .populate('manager', 'email name last_name')
-    .populate('updatedBy', 'name last_name')
-    .populate('coach', 'name last_name email')
+    } )
+    .populate( 'referralBy', 'name last_name' )
+    .populate( 'manager', 'email name last_name' )
+    .populate( 'updatedBy', 'name last_name' )
+    .populate( 'coach', 'name last_name email' )
     .exec()
-    .then(referral => {
+    .then( referral => {
       referee = `${referral.referralBy.name} ${referral.referralBy.last_name}`;
 
-      res.json(referral);
-      if (status.toLowerCase() === 'closed' && !email_sent) {
+      res.json( referral );
+      if ( status.toLowerCase() === 'closed' && !email_sent ) {
         name = name.toUpperCase();
-        due_date = moment(due_date).format("L");
-        moveIn = moment(moveIn).format("L");
-        order_date = moment(order_date).format("L");
+        due_date = moment( due_date ).format( "L" );
+        moveIn = moment( moveIn ).format( "L" );
+        order_date = moment( order_date ).format( "L" );
         last_name = last_name.toUpperCase();
         from = req.user.email;
-        let to = [referral.manager.email];
-        let cc = [referral.coach.email, req.user.email];
+        let to = [ referral.manager.email ];
+        let cc = [ referral.coach.email, req.user.email ];
 
-        return transporter.sendMail({
+        return transporter.sendMail( {
           to: to,
           from: from,
           cc: cc,
@@ -265,49 +265,49 @@ exports.updateReferral = (req, res, next) => {
         </html>
         `
 
-        }, (err, info) => {
-          if (!err) {
-            Referral.findOneAndUpdate({
+        }, ( err, info ) => {
+          if ( !err ) {
+            Referral.findOneAndUpdate( {
                 _id: id
               }, {
                 email_sent: true
               }, {
                 new: true
-              })
-              .then(ref => res.json(ref))
+              } )
+              .then( ref => res.json( ref ) )
           }
-        })
-    
+        } )
+
       }
-    })
-    .catch(err => console.log(err));
+    } )
+    .catch( err => console.log( err ) );
 
 }
 
 
 //delete referral
-exports.deleteReferral = (req, res, next) => {
+exports.deleteReferral = ( req, res, next ) => {
   const id = req.params.id;
-  Referral.findOneAndRemove({
+  Referral.findOneAndRemove( {
       _id: id,
       userId: req.user._id
-    })
-    .populate('referralBy', 'name last_name')
-    .then((ref) => {
-      if (!ref) return res.status(401).json({
+    } )
+    .populate( 'referralBy', 'name last_name' )
+    .then( ( ref ) => {
+      if ( !ref ) return res.status( 401 ).json( {
         message: 'Can not delete this referral'
-      });
+      } );
 
 
-      res.json({
+      res.json( {
         message: 'Referral Deleted!'
-      });
-    })
-    .catch(err => console.log(err));
+      } );
+    } )
+    .catch( err => console.log( err ) );
 }
 
 //adding the referral handler page
-exports.addReferral = (req, res, next) => {
+exports.addReferral = ( req, res, next ) => {
   const name = req.body.name;
   const last_name = req.body.last_name;
   let address = req.body.address;
@@ -323,23 +323,23 @@ exports.addReferral = (req, res, next) => {
 
   let coach;
   let userId;
-  if (!req.body.userId) {
+  if ( !req.body.userId ) {
     //the coach is submitting the referral.
     userId = req.body.userId;
     coach = req.user._id;
   } else {
     //logging using submitting the referral.
-    User.findOne({
+    User.findOne( {
         _id: req.user._id
-      })
-      .then(u => {
+      } )
+      .then( u => {
         //if no user found.
-        if (!u) return res.status(404).json(new Error('No user found'));
+        if ( !u ) return res.status( 404 ).json( new Error( 'No user found' ) );
         userId = u._id;
         coach = u.coach._id;
         const manager = req.body.manager;
 
-        const referral = new Referral({
+        const referral = new Referral( {
           name: name,
           last_name: last_name,
           address: address,
@@ -356,18 +356,18 @@ exports.addReferral = (req, res, next) => {
           coach: coach,
           manager: manager
 
-        });
+        } );
         referral.save()
-          .then(result => {
-            res.json(result);
-            return Referee.findById(referralBy)
-          }).then(ref => {
+          .then( result => {
+            res.json( result );
+            return Referee.findById( referralBy )
+          } ).then( ref => {
 
-            ref.referrals.push(referral._id);
+            ref.referrals.push( referral._id );
             ref.save();
-          })
-      })
-      .catch(error => next(error));
+          } )
+      } )
+      .catch( error => next( error ) );
 
 
   };
@@ -375,48 +375,48 @@ exports.addReferral = (req, res, next) => {
 }
 
 
-exports.getAllReferralsById = (req, res) => {
+exports.getAllReferralsById = ( req, res ) => {
   const id = req.params.id;
 
-  Referral.find({
+  Referral.find( {
       referralBy: id
-    })
-    .populate('referralBy', 'name last_name')
-    .sort('moveIn')
+    } )
+    .populate( 'referralBy', 'name last_name' )
+    .sort( 'moveIn' )
     .exec()
-    .then(referrals => {
+    .then( referrals => {
 
-      res.json(referrals);
+      res.json( referrals );
 
-    })
-    .catch(err => console.log(err));
+    } )
+    .catch( err => console.log( err ) );
 }
 
 
 
 
-exports.getReferralsStatus = (req, res) => {
+exports.getReferralsStatus = ( req, res ) => {
   let status = req.params.status;
   let statusRequested = status;
 
-  if (statusRequested === 'not%20sold') {
+  if ( statusRequested === 'not%20sold' ) {
     statusRequested = 'not sold';
-  } else if (statusRequested === 'in%20progress') {
+  } else if ( statusRequested === 'in%20progress' ) {
     statusRequested = 'in progress';
   }
 
   const title = 'My Referrals';
   const path = 'my referrals';
-  if (statusRequested !== 'all') {
-    Referral.find({
+  if ( statusRequested !== 'all' ) {
+    Referral.find( {
         status: statusRequested
-      })
-      .sort('-moveIn')
+      } )
+      .sort( '-moveIn' )
       .exec()
-      .then(referrals => {
+      .then( referrals => {
 
-        referrals = [...referrals];
-        res.json(referrals);
+        referrals = [ ...referrals ];
+        res.json( referrals );
 
         // res.render('referrals/my-referrals', {
         //   referrals: referrals,
@@ -424,42 +424,42 @@ exports.getReferralsStatus = (req, res) => {
         //   path: path,
         //   status: statusRequested
         // });
-      })
-      .catch(err => console.log(err));
+      } )
+      .catch( err => console.log( err ) );
   } else {
     Referral.find()
-      .sort('-moveIn')
+      .sort( '-moveIn' )
       .exec()
-      .then(referrals => {
-        referrals = [...referrals];
-        res.json(referrals);
+      .then( referrals => {
+        referrals = [ ...referrals ];
+        res.json( referrals );
 
-      })
-      .catch(err => console.log(err));
+      } )
+      .catch( err => console.log( err ) );
 
   }
 }
 
-exports.getReferraslByDate = (req, res, next) => {
+exports.getReferraslByDate = ( req, res, next ) => {
   const today = new Date().toLocaleDateString();
   const startDay = req.body.start;
   const endDay = req.body.end;
- 
-  let start = moment(startDay).startOf('day');
+
+  let start = moment( startDay ).startOf( 'day' );
   // end today
 
-  let end = moment(endDay).endOf('day');
- 
+  let end = moment( endDay ).endOf( 'day' );
 
-  Referral.find({
-          order_date: {
-              $gte: start,
-              $lt: end
-          },
-         userId: req.user._id
-      })
-      .then(referrals => {
-          res.json(referrals);
-      })
-      .catch(err => next(err));
+
+  Referral.find( {
+      order_date: {
+        $gte: start,
+        $lt: end
+      },
+      userId: req.user._id
+    } )
+    .then( referrals => {
+      res.json( referrals );
+    } )
+    .catch( err => next( err ) );
 }

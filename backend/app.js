@@ -8,12 +8,16 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const cors = require('cors');
+const morgan = require('morgan');
 require('dotenv').config()
 const db_pws = process.env.MY_MONGO_PASSWORD;
+
+
 
 const MONGO_URL = `mongodb+srv://melendez:${db_pws}@cluster0-m0t4i.mongodb.net/fios`;
 //main app
 const app = express();
+app.use(morgan('dev'));
 app.use(cors());
 
 app.use(helmet());
@@ -63,7 +67,8 @@ app.use(flyerRoutes);
 
 mongoose
   .connect(MONGO_URL, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
   })
   .then(result => {
     let PORT = process.env.PORT || 3000;
